@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교육 | 비하이브 AI·SW·진로 교육</title>
+<meta name="description" content="초·중·고, 대학, 공공기관, 기업을 위한 맞춤형 AI·SW 교육과 진로 교육 프로그램.">
+<meta property="og:title" content="교육 | 비하이브 AI·SW·진로 교육">
+<meta property="og:description" content="초·중·고, 대학, 공공기관, 기업을 위한 맞춤형 AI·SW 교육과 진로 교육 프로그램.">
+<meta name="theme-color" content="#e9a915">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="비하이브 홈"><svg viewBox="0 0 32 36" aria-hidden="true"><path d="M16 0 32 9v18L16 36 0 27V9z" fill="var(--honey)"/><path d="M16 10.5 23 14.5v7L16 25.5 9 21.5v-7z" fill="var(--charcoal)"/></svg><span>beehive <small>비하이브</small></span></a>
+    <button class="menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false"><i class="ph ph-list"></i></button>
+    <nav class="nav-links" aria-label="주요 메뉴"><a href="index.html">홈</a><a href="education.html" aria-current="page">교육</a><a href="studio.html">스튜디오</a><a href="about.html">소개</a><a class="btn btn-honey" href="contact.html">문의하기</a></nav>
+  </div>
+</header>
+<main>
+<section class="page-hero">
+  <div class="wrap grid">
+    <div>
+      <span class="eyebrow">비하이브 교육</span>
+      <h1>대상에 맞춘<br>AI·SW·진로 수업</h1>
+      <p class="lead">같은 AI 수업도 초등학생과 직장인에게는 달라야 해요. 대상과 목표에 맞춰 설계합니다.</p>
+    </div>
+    <!-- TODO: 실제 강의 사진으로 교체 -->
+    <div class="photo tone"><img src="https://picsum.photos/seed/beehive-lecture-room/1200/825" alt="강의 현장" width="1200" height="825"></div>
+  </div>
+</section>
+
+<section style="padding-top:48px">
+  <div class="wrap">
+    <h2 class="h2">프로그램</h2>
+    <div class="tabs" role="tablist" aria-label="교육 분야">
+      <button class="tab" role="tab" id="t-ai" data-key="ai" aria-controls="p-ai" aria-selected="true">AI·SW 교육</button>
+      <button class="tab" role="tab" id="t-career" data-key="career" aria-controls="p-career" aria-selected="false" tabindex="-1">진로 교육</button>
+    </div>
+
+    <div class="panel" id="p-ai" role="tabpanel" aria-labelledby="t-ai">
+      <div class="programs">
+        <div class="program wide">
+          <div>
+            <span class="who">초·중학생</span>
+            <h3>처음 만나는 AI와 코딩</h3>
+            <p>언플러그드 활동과 블록 코딩으로 AI가 어떻게 배우는지 직접 체험해요. 컴퓨터가 낯선 학생도 따라올 수 있어요.</p>
+          </div>
+          <div class="img tone"><img src="https://picsum.photos/seed/beehive-kids-coding/800/500" alt="블록 코딩 수업" loading="lazy"></div>
+        </div>
+        <div class="program"><span class="who">중·고등학생</span><h3>데이터와 AI 프로젝트</h3><p>생활 속 문제를 골라 데이터를 모으고, 간단한 AI 모델로 해결책을 만들어 발표해요.</p></div>
+        <div class="program"><span class="who">학생 전체</span><h3>생성형 AI 바르게 쓰기</h3><p>챗봇과 이미지 생성 도구를 써 보며 저작권, 개인정보, 사실 확인 습관까지 함께 익혀요.</p></div>
+        <div class="program"><span class="who">교사·교직원</span><h3>수업에 바로 쓰는 AI 연수</h3><p>수업 자료 만들기, 평가 도우미, 업무 문서 작성까지 현장에서 바로 쓰는 활용법을 다뤄요.</p></div>
+        <div class="program"><span class="who">기업·기관</span><h3>업무 생산성 AI 교육</h3><p>보고서, 기획, 데이터 정리에 생성형 AI를 쓰는 방법을 실제 업무 예시로 실습해요.</p></div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-career" role="tabpanel" aria-labelledby="t-career" hidden>
+      <div class="programs">
+        <div class="program wide">
+          <div>
+            <span class="who">초·중·고등학생</span>
+            <h3>AI 시대의 직업 탐색</h3>
+            <p>AI가 바꾸는 일의 모습을 살펴보고, 새로 생기는 직업과 사라지지 않을 역량을 함께 이야기해요.</p>
+          </div>
+          <div class="img tone"><img src="https://picsum.photos/seed/beehive-career-talk/800/500" alt="진로 수업" loading="lazy"></div>
+        </div>
+        <div class="program"><span class="who">중·고등학생</span><h3>나를 알아가는 진로 설계</h3><p>흥미와 강점을 찾는 활동으로 나만의 진로 지도를 그려 보는 워크숍이에요.</p></div>
+        <div class="program"><span class="who">중·고등학생</span><h3>진로 포트폴리오 만들기</h3><p>디지털 도구로 활동 기록을 정리하고, 나를 소개하는 포트폴리오를 직접 완성해요.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--surface-2)">
+  <div class="wrap">
+    <h2 class="h2 reveal">운영 형태</h2>
+    <p class="lead reveal">일정과 인원에 맞춰 골라 주세요. 섞어서 구성할 수도 있어요.</p>
+    <div class="formats">
+      <div class="format reveal"><i class="ph ph-lightning"></i><div><b>1회 특강</b><span>1~3차시 집중 수업</span></div></div>
+      <div class="format reveal" style="--i:1"><i class="ph ph-calendar-dots"></i><div><b>연속 과정</b><span>매주 이어지는 정규 과정</span></div></div>
+      <div class="format reveal" style="--i:2"><i class="ph ph-tent"></i><div><b>캠프</b><span>방학 중 집중 프로젝트</span></div></div>
+      <div class="format reveal" style="--i:3"><i class="ph ph-chalkboard-teacher"></i><div><b>연수</b><span>교직원·임직원 대상</span></div></div>
+      <div class="format reveal" style="--i:4"><i class="ph ph-video-camera"></i><div><b>온라인</b><span>실시간 화상 수업</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="band" style="padding-top:96px">
+  <div class="wrap">
+    <div class="band-inner reveal">
+      <div>
+        <h2>우리 학교·기관에 맞는 수업이 궁금하다면</h2>
+        <p>대상과 일정만 알려 주셔도 수업 계획을 제안해 드려요.</p>
+      </div>
+      <a class="btn btn-dark" href="contact.html">문의하기 <i class="ph ph-arrow-right"></i></a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap foot">
+    <div>
+      <div class="brand"><svg viewBox="0 0 32 36" aria-hidden="true"><path d="M16 0 32 9v18L16 36 0 27V9z" fill="var(--honey)"/><path d="M16 10.5 23 14.5v7L16 25.5 9 21.5v-7z" fill="var(--charcoal)"/></svg><span>beehive</span></div>
+      <p>배움과 이야기를 짓는 곳, 비하이브</p>
+      <p>&copy; <span data-year></span> Beehive. All rights reserved.</p>
+    </div>
+    <nav aria-label="바닥글 메뉴">
+      <a href="education.html">교육</a><a href="studio.html">스튜디오</a><a href="about.html">소개</a><a href="contact.html">문의하기</a>
+    </nav>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

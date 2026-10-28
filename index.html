@@ -3,119 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>비하이브 | AI·SW·진로 교육과 광고 쇼츠 제작</title>
-<meta name="description" content="학교·기관·기업을 위한 AI·SW·진로 교육과 소상공인을 위한 광고 쇼츠를 만드는 비하이브입니다.">
-<meta property="og:title" content="비하이브 | AI·SW·진로 교육과 광고 쇼츠 제작">
-<meta property="og:description" content="학교·기관·기업을 위한 AI·SW·진로 교육과 소상공인을 위한 광고 쇼츠를 만드는 비하이브입니다.">
-<meta name="theme-color" content="#e9a915">
+<title>B-hive 비하이브</title>
+<meta name="description" content="학교·대학·기업의 교육을 기획하고 운영하는 비하이브(B-hive). 교육과 스튜디오 중 들어갈 곳을 골라 주세요.">
+<meta property="og:title" content="B-hive 비하이브">
+<meta property="og:description" content="학교·대학·기업의 교육과 소상공인 광고 쇼츠를 만드는 비하이브입니다.">
+<meta property="og:image" content="assets/img/hive.jpg">
+<meta name="theme-color" content="#f3ede3">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="assets/img/hive.jpg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* B-hive 회사소개 자료와 같은 팔레트 */
+  :root {
+    --cream: #f3ede3;
+    --ink: #1c2320;
+    --ink-soft: #5d625c;
+    --honey: #f2b630;
+    --honey-deep: #a9760a;
+    --line: rgb(28 35 32 / 0.14);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100dvh;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .stage {
+    position: relative;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+  }
+  /* 벌집 이미지: 왼쪽이 크림색이라 배경과 자연스럽게 이어져요 */
+  .hive {
+    position: absolute; inset: 0;
+    background: url("assets/img/hive.jpg") right center / cover no-repeat;
+    z-index: 0;
+  }
+  .hive::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--cream) 0%, var(--cream) 38%, rgb(243 237 227 / 0) 62%);
+  }
+  .stage > *:not(.hive) { position: relative; z-index: 1; }
+
+  .bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px clamp(20px, 5vw, 72px);
+  }
+  .logo { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+  .logo span { color: var(--honey-deep); }
+  .staff {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 9px 16px; border-radius: 999px;
+    background: rgb(243 237 227 / 0.86); border: 1px solid var(--line);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transition: background .2s;
+  }
+  .staff:hover { background: #fff; }
+
+  .main {
+    align-self: center;
+    padding: 0 clamp(20px, 5vw, 72px);
+    max-width: 760px;
+  }
+  .kicker {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 15px; font-weight: 700; color: var(--honey-deep);
+  }
+  .kicker::before { content: ""; width: 4px; height: 20px; background: var(--honey); border-radius: 2px; }
+  h1 {
+    margin: 18px 0 0;
+    font-size: clamp(36px, 4.6vw, 58px);
+    line-height: 1.18; letter-spacing: -0.035em; font-weight: 800;
+  }
+  .ask { margin: 22px 0 0; font-size: 18px; color: var(--ink-soft); }
+
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 36px; max-width: 640px; }
+  .choice {
+    position: relative; display: flex; flex-direction: column;
+    min-height: 210px; padding: 26px 24px 22px;
+    border-radius: 18px; overflow: hidden;
+    transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+  }
+  .choice:hover, .choice:focus-visible { transform: translateY(-6px); box-shadow: 0 26px 50px -26px rgb(28 35 32 / 0.55); }
+  .choice:active { transform: translateY(-2px) scale(0.99); }
+  .choice .ico { font-size: 30px; }
+  .choice .name { margin-top: auto; font-size: 14px; font-weight: 700; opacity: .75; }
+  .choice h2 { margin: 6px 0 0; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+  .choice p { margin: 8px 0 0; font-size: 14.5px; line-height: 1.55; opacity: .82; }
+  .choice .go {
+    position: absolute; top: 22px; right: 22px;
+    width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; font-size: 18px;
+    transition: transform .45s var(--ease);
+  }
+  .choice:hover .go { transform: translateX(4px); }
+
+  .edu { background: var(--ink); color: #f3ede3; }
+  .edu .ico { color: var(--honey); }
+  .edu .go { background: var(--honey); color: var(--ink); }
+  .studio { background: var(--honey); color: var(--ink); }
+  .studio .go { background: var(--ink); color: var(--honey); }
+
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 12px 44px;
+    margin: 0 clamp(20px, 5vw, 72px); padding: 22px 0 30px;
+    border-top: 1px solid var(--line); max-width: 640px;
+  }
+  .facts div { display: grid; gap: 4px; }
+  .facts b { font-size: 12.5px; color: var(--honey-deep); font-weight: 700; }
+  .facts span { font-size: 15px; font-weight: 600; }
+
+  :focus-visible { outline: 3px solid var(--honey-deep); outline-offset: 3px; }
+
+  /* 등장 */
+  @media (prefers-reduced-motion: no-preference) {
+    .kicker, h1, .ask, .choice, .facts { animation: rise .9s var(--ease) both; }
+    h1 { animation-delay: .06s; }
+    .ask { animation-delay: .12s; }
+    .choice.edu { animation-delay: .2s; }
+    .choice.studio { animation-delay: .28s; }
+    .facts { animation-delay: .36s; }
+    .hive { animation: drift 1.6s var(--ease) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes drift { from { opacity: 0; transform: translateX(40px) scale(1.03); } to { opacity: 1; transform: none; } }
+  }
+
+  /* 태블릿·휴대폰: 벌집은 위쪽 띠로, 내용은 아래로 */
+  @media (max-width: 900px) {
+    .hive {
+      inset: 0 0 auto 0; height: 300px;
+      background-image: url("assets/img/hive-sm.jpg");
+      background-position: 92% 40%; background-size: auto 150%;
+    }
+    .hive::after { background: linear-gradient(180deg, rgb(243 237 227 / 0) 45%, var(--cream) 100%), linear-gradient(90deg, var(--cream) 0%, rgb(243 237 227 / 0) 55%); }
+    .main { padding-top: 150px; }
+  }
+  @media (max-width: 560px) {
+    .bar { padding: 18px 16px; }
+    .logo { font-size: 22px; }
+    .staff { padding: 8px 12px; font-size: 13px; }
+    .hive { height: 230px; }
+    .main { padding: 110px 16px 0; }
+    .ask { font-size: 16px; }
+    .choices { grid-template-columns: 1fr; margin-top: 28px; }
+    .choice { min-height: 160px; }
+    .facts { margin: 32px 16px 0; gap: 14px 28px; }
+  }
+</style>
 </head>
 <body>
-<header class="site-header">
-  <div class="wrap nav">
-    <a class="brand" href="index.html" aria-label="비하이브 홈"><svg viewBox="0 0 32 36" aria-hidden="true"><path d="M16 0 32 9v18L16 36 0 27V9z" fill="var(--honey)"/><path d="M16 10.5 23 14.5v7L16 25.5 9 21.5v-7z" fill="var(--charcoal)"/></svg><span>beehive <small>비하이브</small></span></a>
-    <button class="menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false"><i class="ph ph-list"></i></button>
-    <nav class="nav-links" aria-label="주요 메뉴"><a href="index.html" aria-current="page">홈</a><a href="education.html">교육</a><a href="studio.html">스튜디오</a><a href="about.html">소개</a><a class="btn btn-honey" href="contact.html">문의하기</a></nav>
-  </div>
-</header>
-<main>
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <h1>배움과 이야기를 짓는<br><em>벌집</em>, 비하이브</h1>
-      <p class="lead">학교·기관·기업에는 AI·SW·진로 교육을, 동네 가게에는 손님을 부르는 광고 쇼츠를 만들어 드려요.</p>
-      <div class="hero-cta">
-        <a class="btn btn-honey" href="contact.html">문의하기 <i class="ph ph-arrow-right"></i></a>
-        <a class="btn btn-ghost" href="education.html">교육 프로그램</a>
-      </div>
-    </div>
-    <div class="hero-media">
-      <!-- TODO: 실제 수업 사진으로 교체 (권장 1200x1320) -->
-      <div class="photo tone"><img src="https://picsum.photos/seed/beehive-classroom-hero/1200/1320" alt="비하이브 수업 현장" width="1200" height="1320" fetchpriority="high"></div>
-      <span class="hex-deco" aria-hidden="true"></span>
-      <span class="hex-deco small" aria-hidden="true"></span>
-    </div>
-  </div>
-</section>
+<div class="stage">
+  <div class="hive" role="img" aria-label="꿀색과 차콜색 벌집 모양 조형"></div>
 
-<section style="padding-top:24px">
-  <div class="wrap">
-    <h2 class="h2 reveal">두 가지 일을 합니다</h2>
-    <div class="tracks">
-      <a class="track track-edu reveal" href="education.html">
-        <!-- TODO: 교육 현장 사진으로 교체 -->
-        <img src="https://picsum.photos/seed/beehive-edu-track/1400/1000" alt="" loading="lazy">
-        <span class="tag">비하이브 교육</span>
-        <h3>AI·SW·진로 교육</h3>
-        <p>초·중·고, 대학과 공공기관, 기업까지. 대상과 목표에 맞춰 수업을 설계하고 직접 진행해요.</p>
-        <span class="more">교육 알아보기 <i class="ph ph-arrow-right"></i></span>
+  <header class="bar">
+    <a class="logo" href="index.html" aria-label="B-hive 처음으로">B-<span>hive</span></a>
+    <!-- 다음 단계에서 로그인 페이지와 연결 -->
+    <a class="staff" href="login.html"><i class="ph ph-lock-simple"></i>관계자 로그인</a>
+  </header>
+
+  <main class="main">
+    <div class="kicker">비하이브</div>
+    <h1>배움을 설계하고,<br>이야기를 만듭니다</h1>
+    <p class="ask">어떤 일로 찾아오셨나요?</p>
+
+    <nav class="choices" aria-label="들어갈 곳 선택">
+      <a class="choice edu" href="education.html">
+        <i class="ph ph-graduation-cap ico" aria-hidden="true"></i>
+        <span class="go" aria-hidden="true"><i class="ph ph-arrow-right"></i></span>
+        <span class="name">비하이브 교육</span>
+        <h2>학교·기업 교육</h2>
+        <p>교원 연수, AI·디지털 강의, 특성화고 프로젝트</p>
       </a>
-      <a class="track track-studio reveal" style="--i:1" href="studio.html">
-        <!-- TODO: 제작한 쇼츠 캡처로 교체 -->
-        <span class="shorts"><img src="https://picsum.photos/seed/beehive-shorts-cafe/360/640" alt="" loading="lazy"></span>
-        <span class="tag">비하이브 스튜디오</span>
-        <h3>광고 쇼츠 제작</h3>
-        <p>가게의 매력을 15~60초 세로 영상에 담아요. 기획부터 촬영, 편집까지 한 번에 맡기세요.</p>
-        <span class="more">스튜디오 알아보기 <i class="ph ph-arrow-right"></i></span>
+      <a class="choice studio" href="studio.html">
+        <i class="ph ph-film-slate ico" aria-hidden="true"></i>
+        <span class="go" aria-hidden="true"><i class="ph ph-arrow-right"></i></span>
+        <span class="name">비하이브 스튜디오</span>
+        <h2>광고 쇼츠 제작</h2>
+        <p>동네 가게를 위한 15~60초 세로 영상</p>
       </a>
-    </div>
-  </div>
-</section>
-
-<section style="background:var(--surface-2)">
-  <div class="wrap">
-    <h2 class="h2 reveal">처음 연락부터 마무리까지</h2>
-    <p class="lead reveal">교육이든 영상이든, 일하는 순서는 같아요. 먼저 충분히 듣고 시작합니다.</p>
-    <div class="flow">
-      <div class="flow-item reveal"><span class="ico"><i class="ph ph-chats-circle"></i></span><div><h3>상담</h3><p>대상, 목표, 일정, 예산을 함께 정리해요.</p></div></div>
-      <div class="flow-item reveal" style="--i:1"><span class="ico"><i class="ph ph-pencil-ruler"></i></span><div><h3>맞춤 설계</h3><p>수업 계획서나 영상 기획안을 먼저 보여 드려요.</p></div></div>
-      <div class="flow-item reveal" style="--i:2"><span class="ico"><i class="ph ph-person-simple-run"></i></span><div><h3>진행</h3><p>현장 수업 또는 촬영과 편집을 진행해요.</p></div></div>
-      <div class="flow-item reveal" style="--i:3"><span class="ico"><i class="ph ph-seal-check"></i></span><div><h3>피드백</h3><p>결과를 함께 돌아보고 다음을 준비해요.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2 class="h2 reveal">이런 곳과 함께해요</h2>
-    <div class="bento">
-      <div class="cell c-a reveal"><i class="ph ph-student"></i><div><h3>초·중·고등학교</h3><p>정규 수업, 창체, 방과후, 진로 주간 프로그램</p></div></div>
-      <div class="cell c-b tone reveal" style="--i:1"><img src="https://picsum.photos/seed/beehive-students-laptop/900/600" alt="노트북으로 실습하는 학생들" loading="lazy"></div>
-      <div class="cell c-c reveal"><i class="ph ph-buildings"></i><div><h3>대학·공공기관</h3><p>교직원 연수, 시민 디지털 교육</p></div></div>
-      <div class="cell c-d reveal" style="--i:1"><i class="ph ph-briefcase"></i><div><h3>기업</h3><p>생성형 AI 업무 활용 교육</p></div></div>
-      <div class="cell c-e reveal" style="--i:2"><i class="ph ph-storefront"></i><div><h3>소상공인</h3><p>매장·메뉴·이벤트 홍보 쇼츠</p></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="band">
-  <div class="wrap">
-    <div class="band-inner reveal">
-      <div>
-        <h2>어떤 수업이, 어떤 영상이 필요하세요?</h2>
-        <p>짧게 남겨 주시면 맞춤 제안을 드릴게요.</p>
-      </div>
-      <a class="btn btn-dark" href="contact.html">문의하기 <i class="ph ph-arrow-right"></i></a>
-    </div>
-  </div>
-</div>
-
-</main>
-<footer class="site-footer">
-  <div class="wrap foot">
-    <div>
-      <div class="brand"><svg viewBox="0 0 32 36" aria-hidden="true"><path d="M16 0 32 9v18L16 36 0 27V9z" fill="var(--honey)"/><path d="M16 10.5 23 14.5v7L16 25.5 9 21.5v-7z" fill="var(--charcoal)"/></svg><span>beehive</span></div>
-      <p>배움과 이야기를 짓는 곳, 비하이브</p>
-      <p>&copy; <span data-year></span> Beehive. All rights reserved.</p>
-    </div>
-    <nav aria-label="바닥글 메뉴">
-      <a href="education.html">교육</a><a href="studio.html">스튜디오</a><a href="about.html">소개</a><a href="contact.html">문의하기</a>
     </nav>
-  </div>
-</footer>
-<script src="assets/site.js"></script>
+  </main>
+
+  <footer class="facts">
+    <div><b>기업 등록</b><span>여성기업 · 소상공인</span></div>
+    <div><b>교육 대상</b><span>학교 · 대학 · 기업</span></div>
+    <div><b>대표 프로젝트</b><span>특성화고 해커톤 4,400만 원 규모</span></div>
+  </footer>
+</div>
 </body>
 </html>

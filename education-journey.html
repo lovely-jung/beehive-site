@@ -738,6 +738,11 @@ body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;background:#f
  .edu-card.workshops .edu-icon,.edu-card.organizations .edu-icon,.edu-card.curriculum .edu-icon{width:90px!important;height:90px!important;}
  .edu-card.blue .edu-icon{width:82px!important;height:82px!important;}
 }
+/* Keep the upper side labels above their lower banners on landscape screens. */
+@media(min-width:761px) and (max-height:1099px){
+ .edu-card.students{top:43%!important;}
+ .edu-card.campus{top:39%!important;}
+}
 </style>
 
 <div class="app">

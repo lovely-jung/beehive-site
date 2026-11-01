@@ -1,0 +1,1397 @@
+<title>비하이브 | 배움의 여정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Pen+Script&display=swap">
+<style>
+/* Motion only: the paper stage fills its container. Single paper look. */
+:root{
+  --paper:#f2f0ea;
+  --ink:#33302c;
+  --ink-soft:#6d6860;
+  --f-hand:"Nanum Pen Script","Gaegu",cursive;
+  --f-ui:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--paper);overflow:hidden;color:var(--ink);font-family:var(--f-ui)}
+.app,.stage{position:relative;width:100%;height:100%;overflow:hidden;background:var(--paper)}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:multiply;opacity:.5}
+
+/* ---------------- education outro: reveals after the journey ---------------- */
+#educationOutro{position:absolute;inset:0;z-index:3;display:grid;place-items:center;overflow:hidden;background:#fbfaf7;color:#25231f;opacity:0;visibility:hidden;pointer-events:none;font-family:var(--f-ui);}
+#educationOutro:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 43%,rgba(239,232,216,.52),transparent 47%);}
+.outro-inner{position:relative;width:min(1320px,94vw);height:min(760px,94vh);min-height:580px;}
+.outro-nav{position:absolute;top:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:27px;padding:13px 23px;border:1px solid rgba(37,35,31,.08);border-radius:999px;background:rgba(255,255,255,.84);box-shadow:0 8px 24px rgba(40,35,28,.07);font-size:12px;white-space:nowrap;}
+.outro-brand{font-weight:800;letter-spacing:.11em;margin-right:9px}.outro-nav a{color:inherit;text-decoration:none;opacity:.72}
+.outro-heading{position:absolute;z-index:2;top:18%;left:50%;width:min(680px,70vw);transform:translateX(-50%);text-align:center;}
+.outro-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.16em;font-weight:700;color:#9a6a2e;text-transform:uppercase}.outro-eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#d89940;box-shadow:0 0 0 4px rgba(216,153,64,.14)}
+.outro-heading h1{font-size:clamp(34px,4.5vw,64px);line-height:1.12;letter-spacing:-.055em;margin:15px 0 13px;font-weight:800;word-break:keep-all}.outro-heading p{font-size:clamp(13px,1.2vw,16px);line-height:1.7;color:#77736d;margin:0 auto;max-width:500px;word-break:keep-all}
+.edu-card{position:absolute;display:flex;flex-direction:column;justify-content:space-between;width:clamp(210px,23vw,310px);height:clamp(156px,20vh,205px);padding:19px 21px;border-radius:17px;box-shadow:0 14px 38px rgba(47,40,28,.11);border:1px solid rgba(40,34,24,.06);overflow:hidden;opacity:0;transform:translateY(22px) scale(.97);transition:transform .6s cubic-bezier(.2,.75,.25,1),opacity .6s ease;}
+#educationOutro.visible .edu-card{opacity:1;transform:translateY(0) scale(1)}
+.edu-card:nth-of-type(1){transition-delay:.12s}.edu-card:nth-of-type(2){transition-delay:.22s}.edu-card:nth-of-type(3){transition-delay:.32s}.edu-card:nth-of-type(4){transition-delay:.42s}
+.edu-card .eyeline{position:relative;z-index:1;font-size:10px;letter-spacing:.16em;font-weight:800;opacity:.65}.edu-card h2{position:relative;z-index:1;font-size:clamp(18px,1.8vw,24px);line-height:1.2;letter-spacing:-.04em;margin:5px 0 0;word-break:keep-all}.edu-card p{position:relative;z-index:1;font-size:12px;line-height:1.45;margin:7px 0 0;opacity:.76;max-width:210px;word-break:keep-all}
+.edu-card .shape{position:absolute;right:15px;top:16px;width:94px;height:94px;border-radius:50%;opacity:.72}.edu-card .shape:before,.edu-card .shape:after{content:"";position:absolute}
+.edu-card.primary{left:3%;top:43%;background:#f2dfc3;color:#393126;transform:rotate(-3deg) translateY(22px)}.edu-card.primary .shape{background:#e8b96e;right:-5px;top:67px;width:145px;height:96px;border-radius:70% 30% 0 0}.edu-card.primary .shape:before{width:54px;height:65px;left:45px;top:-26px;border-radius:50% 50% 8px 8px;background:#f7eee0;box-shadow:0 8px 0 -2px #8a6a43}
+.edu-card.institutions{right:2%;top:37%;background:#e4eaf2;color:#28364a;transform:rotate(2.5deg) translateY(22px)}.edu-card.institutions .shape{background:#a9bdd4;width:112px;height:78px;top:78px;border-radius:50% 50% 12px 12px}.edu-card.institutions .shape:before{left:19px;top:-22px;width:74px;height:38px;background:#f4f6f8;clip-path:polygon(50% 0,100% 38%,92% 48%,8% 48%,0 38%)}.edu-card.institutions .shape:after{left:50px;top:14px;width:12px;height:63px;background:#7d93ad;box-shadow:-25px 0 0 #f4f6f8,25px 0 0 #f4f6f8}
+.edu-card.corporate{left:12%;bottom:5%;background:#dce8dd;color:#314337;transform:rotate(2deg) translateY(22px)}.edu-card.corporate .shape{right:22px;top:57px;width:100px;height:74px;border-radius:16px;background:#9bb29d}.edu-card.corporate .shape:before{left:18px;top:15px;width:64px;height:43px;background:#eaf0e6;border-radius:5px;box-shadow:0 48px 0 -17px #536c57}.edu-card.corporate .shape:after{left:46px;top:58px;width:9px;height:13px;background:#536c57}
+.edu-card.method{right:11%;bottom:3%;background:#f1e0e3;color:#503940;transform:rotate(-2deg) translateY(22px)}.edu-card.method .shape{right:21px;top:49px;width:83px;height:102px;border-radius:40px 40px 16px 16px;background:#d99ca4}.edu-card.method .shape:before{left:17px;top:17px;width:49px;height:49px;border-radius:50%;background:#f9e8df}.edu-card.method .shape:after{left:24px;top:76px;width:36px;height:3px;background:#f9e8df;box-shadow:0 8px 0 #f9e8df}
+.outro-foot{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);font-size:11px;color:#8b867f;letter-spacing:.04em;white-space:nowrap}
+@media(max-width:760px){.outro-inner{width:100vw;height:100vh;min-height:600px}.outro-nav{top:14px;gap:13px;padding:11px 15px;font-size:10px}.outro-brand{margin-right:1px}.outro-heading{top:16%;width:90vw}.outro-heading h1{font-size:clamp(31px,8vw,46px)}.outro-heading p{max-width:360px;font-size:13px}.edu-card{width:42vw;min-width:0;height:145px;padding:13px 14px;border-radius:14px}.edu-card h2{font-size:17px}.edu-card p{font-size:10px;max-width:135px}.edu-card .shape{transform:scale(.7);transform-origin:bottom right;right:4px;top:auto;bottom:-2px}.edu-card.primary{left:4%;top:43%}.edu-card.institutions{right:4%;top:44%}.edu-card.corporate{left:7%;bottom:8%}.edu-card.method{right:7%;bottom:7%}.outro-foot{bottom:2%;font-size:9px}}
+@media(max-height:650px) and (min-width:761px){.outro-heading{top:14%}.edu-card{height:150px}.edu-card.primary{top:42%}.edu-card.institutions{top:36%}}
+
+
+/* Reference-inspired education portfolio outro: central portrait + floating project panels */
+#educationOutro{background:#fff;color:#161616;}
+#educationOutro:before{display:none}
+.outro-inner{width:100%;height:100%;min-height:0;max-width:none;}
+.outro-nav{top:17px;gap:25px;padding:12px 22px;border-color:#f0efed;background:rgba(255,255,255,.94);box-shadow:0 7px 18px rgba(0,0,0,.07);font-size:11px;z-index:8}
+.outro-brand{font-size:10px;letter-spacing:.1em}
+.outro-heading{top:11%;width:min(690px,74vw);}
+.outro-eyebrow{font-size:10px;letter-spacing:.18em;color:#827e78}
+.outro-eyebrow:before{background:#e5a13f;box-shadow:0 0 0 4px rgba(229,161,63,.14)}
+.outro-heading h1{font-size:clamp(36px,4.55vw,62px);line-height:1.06;letter-spacing:-.065em;margin:12px 0 10px;font-weight:850;color:#121212}
+.outro-heading p{font-size:clamp(12px,1vw,14px);line-height:1.6;color:#777;max-width:430px}
+.edu-card{box-sizing:border-box;z-index:1;display:block;padding:17px 18px;border:1px solid rgba(0,0,0,.045);border-radius:13px;box-shadow:0 12px 28px rgba(0,0,0,.09);overflow:hidden;transition:opacity .75s ease,transform .75s cubic-bezier(.18,.74,.25,1);}
+#educationOutro.visible .edu-card{transform:translateY(0) rotate(var(--tilt,0deg)) scale(1);}
+.edu-card .eyeline{display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.12em;font-weight:750;color:#8b8883}
+.edu-card h2{font-size:clamp(17px,1.5vw,21px);line-height:1.17;letter-spacing:-.04em;margin:7px 0 4px;color:#1c1b19}
+.edu-card p{font-size:11px;line-height:1.45;color:#777;margin:0;max-width:190px}
+.edu-card .shape{display:none}
+.edu-card .mini-ui{position:absolute;right:14px;bottom:14px;width:42%;height:48%;border-radius:8px;background:#f7f7f5;border:1px solid rgba(0,0,0,.06);box-shadow:0 5px 14px rgba(0,0,0,.06);}
+.mini-ui:before,.mini-ui:after{content:"";position:absolute;display:block;border-radius:4px}
+.mini-ui:before{left:9px;top:10px;width:36%;height:70%;background:linear-gradient(145deg,#f2c586,#e9943e)}
+.mini-ui:after{left:calc(46% + 8px);top:13px;width:38%;height:4px;background:#343434;box-shadow:0 10px 0 #c9c7c3,0 20px 0 #dedcd8,0 30px 0 #edebe7}
+.edu-card .pill{display:inline-block;margin-top:10px;padding:5px 10px;border-radius:99px;background:#171717;color:white;font-size:9px;letter-spacing:.01em}
+.edu-card.students{left:3%;top:42%;width:clamp(225px,24vw,330px);height:175px;background:#fff;--tilt:-2deg;transform:translateY(24px) rotate(-2deg) scale(.97);}
+.edu-card.students .mini-ui{right:12px;bottom:12px;width:41%;height:56%;background:#f7f6f2}
+.edu-card.students .mini-ui:before{background:linear-gradient(160deg,#e5c994,#d9a153);border-radius:50% 50% 6px 6px;width:32%;height:65%;top:auto;bottom:0}
+.edu-card.campus{right:2.5%;top:31%;width:clamp(220px,22vw,300px);height:160px;background:#f7f7f6;--tilt:2deg;transform:translateY(24px) rotate(2deg) scale(.97);}
+.edu-card.campus .mini-ui{background:#e8edf4}
+.edu-card.campus .mini-ui:before{left:12px;top:13px;width:42px;height:42px;border-radius:50%;background:#bdcbdc}
+.edu-card.campus .mini-ui:after{left:66px;top:18px;width:35%;background:#53657e;box-shadow:0 10px 0 #9ca8b6,0 20px 0 #d2d7dd}
+.edu-card.workshops{left:5%;bottom:8%;width:clamp(205px,20vw,278px);height:164px;background:#e8862d;--tilt:1deg;transform:translateY(24px) rotate(1deg) scale(.97);}
+.edu-card.workshops .eyeline,.edu-card.workshops h2,.edu-card.workshops p{color:#fff}
+.edu-card.workshops .eyeline{opacity:.82}.edu-card.workshops h2{font-size:21px}.edu-card.workshops .mini-ui{right:12px;bottom:12px;width:38%;height:51%;background:#f9c98c;border:0}
+.edu-card.workshops .mini-ui:before{background:#f6e4c8;width:65%;height:65%;left:17%;top:16%}.edu-card.workshops .mini-ui:after{background:#b96824;width:52%;left:24%;top:65%;height:3px;box-shadow:0 7px 0 rgba(185,104,36,.45)}
+.edu-card.organizations{right:5%;bottom:5%;width:clamp(245px,27vw,365px);height:180px;background:#f0e6d8;--tilt:-1.5deg;transform:translateY(24px) rotate(-1.5deg) scale(.97);}
+.edu-card.organizations .mini-ui{right:14px;bottom:13px;width:42%;height:59%;background:#fff;border-radius:10px}
+.edu-card.organizations .mini-ui:before{left:10px;top:10px;width:40%;height:75%;background:linear-gradient(160deg,#f7f4ee,#e5d6c3)}
+.edu-card.organizations .mini-ui:after{left:54%;top:13px;width:34%;height:4px;background:#3e355d;box-shadow:0 10px 0 #c9c4d0,0 20px 0 #dedbe2,0 31px 0 #eeeaf0}
+.outro-person{position:absolute;z-index:3;left:50%;bottom:-10%;height:min(78vh,790px);width:auto;max-width:58vw;transform:translate(-50%,34px);object-fit:contain;object-position:center bottom;filter:grayscale(1) contrast(1.02);opacity:0;transition:opacity .9s ease,transform 1.1s cubic-bezier(.18,.74,.25,1);pointer-events:none;}
+#educationOutro.visible .outro-person{opacity:1;transform:translate(-50%,0)}
+.outro-foot{z-index:7;bottom:13px;font-size:9px;color:#aaa;letter-spacing:.14em;text-transform:uppercase;}
+@media(max-width:760px){
+ .outro-nav{top:12px;gap:12px;padding:10px 13px;font-size:9px}.outro-brand{font-size:9px}
+ .outro-heading{top:12%;width:90vw}.outro-heading h1{font-size:clamp(32px,8.1vw,46px);line-height:1.05;margin:10px 0}.outro-heading p{font-size:11px;max-width:320px}
+ .edu-card{padding:12px;border-radius:10px}.edu-card h2{font-size:15px}.edu-card p{font-size:9px;max-width:120px}.edu-card .eyeline{font-size:7px}.edu-card .mini-ui{opacity:.72;right:8px;bottom:8px}
+ .edu-card.students{left:2%;top:42%;width:43vw;height:132px}.edu-card.campus{right:2%;top:38%;width:42vw;height:132px}.edu-card.workshops{left:2%;bottom:9%;width:43vw;height:136px}.edu-card.organizations{right:2%;bottom:7%;width:44vw;height:140px}
+ .outro-person{height:57vh;max-width:64vw;bottom:-4%}.outro-foot{bottom:5px;font-size:7px}
+}
+@media(max-height:650px) and (min-width:761px){.outro-heading{top:8%}.outro-heading h1{font-size:42px}.edu-card.students{top:40%}.edu-card.campus{top:30%}.edu-card.workshops{bottom:5%}.outro-person{height:82vh}}
+
+
+/* User refinement: oversized statement, lighter/smaller portrait, full-width navigation */
+.outro-nav{top:0;left:0;transform:none;width:100%;height:68px;box-sizing:border-box;justify-content:flex-start;gap:clamp(18px,3vw,44px);padding:0 clamp(22px,5vw,76px);border:0;border-bottom:1px solid #eeece8;border-radius:0;background:rgba(255,255,255,.97);box-shadow:0 2px 8px rgba(0,0,0,.025);font-size:13px;}
+.outro-brand{margin-right:auto;font-size:14px;letter-spacing:.15em;color:#222;}
+.outro-nav a{font-size:12px;color:#393733;opacity:.82;}
+.outro-heading{top:13%;width:min(940px,88vw);}
+.outro-heading h1{font-size:clamp(52px,7.1vw,98px);line-height:1.01;letter-spacing:-.075em;margin:13px 0 13px;font-weight:850;}
+.outro-heading p{font-size:clamp(13px,1.15vw,16px);}
+.outro-person{height:min(57vh,570px);max-width:43vw;bottom:-7%;filter:grayscale(1) contrast(.78) brightness(1.12);}
+#educationOutro.visible .outro-person{opacity:.43;transform:translate(-50%,0);}
+@media(max-width:760px){
+ .outro-nav{height:58px;padding:0 17px;gap:13px;justify-content:flex-end;}
+ .outro-brand{font-size:12px;margin-right:auto;}
+ .outro-nav a{font-size:10px;white-space:nowrap;}
+ .outro-heading{top:14%;width:94vw;}
+ .outro-heading h1{font-size:clamp(40px,10vw,58px);line-height:1.02;margin:11px 0;}
+ .outro-heading p{font-size:11px;}
+ .outro-person{height:42vh;max-width:52vw;bottom:-2%;}
+ #educationOutro.visible .outro-person{opacity:.38;}
+}
+
+
+/* More compact portrait and reference-like scattered portfolio panels */
+.edu-card.students{left:2.5%;top:43%;width:clamp(205px,21vw,275px);height:148px;}
+.edu-card.campus{right:2%;top:32%;width:clamp(205px,20vw,265px);height:144px;}
+.edu-card.workshops{left:8%;bottom:7%;width:clamp(190px,19vw,250px);height:145px;}
+.edu-card.organizations{right:7%;bottom:5%;width:clamp(220px,23vw,300px);height:156px;}
+.edu-card .mini-ui{width:38%;height:49%;right:11px;bottom:11px;}
+.edu-card.middle{left:2%;top:20%;width:clamp(185px,17vw,225px);height:132px;background:#e8edf3;--tilt:2deg;transform:translateY(24px) rotate(2deg) scale(.97);}
+.edu-card.middle .mini-ui{background:#d5e0ec;width:35%;height:55%;}
+.edu-card.middle .mini-ui:before{background:#fff;left:13%;top:14%;width:74%;height:55%;border-radius:50% 50% 6px 6px;}
+.edu-card.middle .mini-ui:after{left:22%;top:78%;width:56%;height:3px;background:#8296ae;box-shadow:0 6px 0 #a7b5c5;}
+.edu-card.curriculum{right:3%;top:15%;width:clamp(185px,17vw,225px);height:132px;background:#eff0ed;--tilt:-2deg;transform:translateY(24px) rotate(-2deg) scale(.97);}
+.edu-card.curriculum .mini-ui{width:35%;height:52%;background:#fff;}
+.edu-card.curriculum .mini-ui:before{left:10px;top:10px;width:70%;height:9px;background:#343434;border-radius:2px;box-shadow:0 18px 0 #e3e1dc,0 32px 0 #eceae5;}
+.edu-card.curriculum .mini-ui:after{left:10px;top:55px;width:30%;height:17px;background:#e9a352;box-shadow:35px 0 0 #d9e0e4;}
+.outro-person{height:min(38vh,390px);max-width:30vw;bottom:-3%;}
+#educationOutro.visible .outro-person{opacity:.38;}
+@media(max-width:760px){
+ .edu-card.students{left:2%;top:45%;width:42vw;height:122px;}
+ .edu-card.campus{right:2%;top:40%;width:42vw;height:122px;}
+ .edu-card.workshops{left:2%;bottom:9%;width:42vw;height:126px;}
+ .edu-card.organizations{right:2%;bottom:7%;width:43vw;height:130px;}
+ .edu-card.middle{left:1%;top:25%;width:39vw;height:108px;}
+ .edu-card.curriculum{right:1%;top:22%;width:39vw;height:108px;}
+ .edu-card.middle h2,.edu-card.curriculum h2{font-size:13px;}
+ .outro-person{height:27vh;max-width:40vw;bottom:-1%;}
+ #educationOutro.visible .outro-person{opacity:.33;}
+}
+
+
+/* Arrange varied learning snippets close around the central illustration; only selected items are cards */
+.edu-card.students{left:17%;top:43%;width:clamp(205px,22vw,290px);height:148px;}
+.edu-card.campus{right:17%;top:36%;width:clamp(205px,21vw,280px);height:144px;}
+.edu-card.workshops{left:7%;bottom:7%;width:clamp(190px,19vw,250px);height:145px;border-radius:3px;}
+.edu-card.organizations{right:7%;bottom:5%;width:clamp(220px,23vw,300px);height:156px;border-radius:22px 5px 22px 5px;}
+.edu-card.middle{left:2.5%;top:39%;width:clamp(175px,18vw,235px);height:138px;padding:5px 8px;background:transparent;border:0;border-radius:0;box-shadow:none;--tilt:0deg;transform:translateY(20px);}
+#educationOutro.visible .edu-card.middle{transform:translateY(0);}
+.edu-card.middle .eyeline,.edu-card.curriculum .eyeline{color:#9b733c;}
+.edu-card.middle h2,.edu-card.curriculum h2{font-size:clamp(18px,1.65vw,23px);line-height:1.14;max-width:190px;}
+.edu-card.middle p,.edu-card.curriculum p{font-size:12px;max-width:180px;color:#777;}
+.edu-card.middle .mini-ui{right:4px;bottom:0;width:70px;height:70px;border:0;background:transparent;box-shadow:none;border-radius:50%;}
+.edu-card.middle .mini-ui:before{left:12px;top:10px;width:48px;height:48px;border-radius:50%;background:#e6c38f;opacity:.8;}
+.edu-card.middle .mini-ui:after{left:26px;top:20px;width:22px;height:39px;border-radius:12px 12px 5px 5px;background:#f8f4eb;box-shadow:none;}
+.edu-card.curriculum{right:2%;top:20%;width:clamp(170px,17vw,225px);height:134px;padding:5px 8px;background:transparent;border:0;border-radius:0;box-shadow:none;--tilt:0deg;transform:translateY(20px);}
+#educationOutro.visible .edu-card.curriculum{transform:translateY(0);}
+.edu-card.curriculum .mini-ui{right:5px;bottom:1px;width:74px;height:76px;border:0;background:transparent;box-shadow:none;}
+.edu-card.curriculum .mini-ui:before{left:13px;top:5px;width:48px;height:62px;border-radius:3px;background:#f4eee3;box-shadow:8px 6px 0 #d8e0e7;}
+.edu-card.curriculum .mini-ui:after{left:23px;top:19px;width:27px;height:3px;background:#8d8b85;box-shadow:0 10px 0 #c4c0b8,0 20px 0 #c4c0b8,0 30px 0 #c4c0b8;}
+.edu-card.students .mini-ui{width:36%;height:53%;}
+.edu-card.campus .mini-ui{width:36%;height:53%;}
+.edu-card.workshops .mini-ui{width:36%;height:53%;}
+.edu-card.organizations .mini-ui{width:38%;height:56%;}
+@media(max-width:760px){
+ .edu-card.students{left:14%;top:45%;width:40vw;height:118px;}
+ .edu-card.campus{right:14%;top:40%;width:40vw;height:118px;}
+ .edu-card.workshops{left:5%;bottom:9%;width:40vw;height:126px;}
+ .edu-card.organizations{right:5%;bottom:7%;width:42vw;height:130px;}
+ .edu-card.middle{left:1%;top:39%;width:29vw;height:105px;padding:3px;}
+ .edu-card.curriculum{right:1%;top:24%;width:28vw;height:102px;padding:3px;}
+ .edu-card.middle h2,.edu-card.curriculum h2{font-size:13px;}
+ .edu-card.middle p,.edu-card.curriculum p{font-size:8px;}
+ .edu-card.middle .mini-ui,.edu-card.curriculum .mini-ui{transform:scale(.65);transform-origin:bottom right;}
+}
+
+
+/* Re-layout around the person like the supplied portfolio collage. Keep text zones separate. */
+.outro-heading{top:12%;width:min(820px,74vw);}
+.outro-heading h1{font-size:clamp(48px,6.3vw,88px);line-height:1.02;}
+.outro-person{height:min(38vh,390px);max-width:29vw;bottom:-2%;z-index:4;filter:grayscale(1) contrast(.88) brightness(1.08);}
+#educationOutro.visible .outro-person{opacity:.54;}
+.edu-card{z-index:2;}
+.edu-card.students{left:3%;top:45%;width:clamp(215px,26vw,340px);height:178px;padding:12px 0;background:transparent;border:0;border-radius:0;box-shadow:none;--tilt:0deg;transform:translateY(18px);}
+#educationOutro.visible .edu-card.students{transform:translateY(0);}
+.edu-card.students .eyeline,.edu-card.campus .eyeline{font-size:9px;color:#827f79;}
+.edu-card.students h2,.edu-card.campus h2{font-size:clamp(19px,2vw,27px);max-width:68%;line-height:1.08;margin:8px 0;}
+.edu-card.students p,.edu-card.campus p{font-size:11px;max-width:66%;}
+.edu-card.students .mini-ui{right:0;bottom:8px;width:27%;height:72%;border:0;background:transparent;box-shadow:none;transform:rotate(-5deg);}
+.edu-card.students .mini-ui:before{left:4px;top:0;width:42%;height:88%;border:3px solid #242424;border-radius:10px;background:linear-gradient(#fff 0 30%,#e7edf2 30% 54%,#fff 54%);box-shadow:20px 12px 0 -1px #fff,20px 12px 0 2px #242424;}
+.edu-card.students .mini-ui:after{left:29px;top:18px;width:25%;height:3px;background:#b8c4d1;box-shadow:0 11px 0 #e0ddd6,0 22px 0 #d4dce4,0 36px 0 #e7e5e1;}
+.edu-card.campus{right:3%;top:43%;width:clamp(220px,27vw,350px);height:174px;padding:12px 0;background:transparent;border:0;border-radius:0;box-shadow:none;--tilt:0deg;transform:translateY(18px);}
+#educationOutro.visible .edu-card.campus{transform:translateY(0);}
+.edu-card.campus .mini-ui{right:0;bottom:5px;width:45%;height:37%;border:1px solid #e8e6e3;background:#fff;border-radius:9px;box-shadow:0 5px 16px rgba(0,0,0,.08);}
+.edu-card.campus .mini-ui:before{left:8px;top:7px;width:26%;height:70%;background:#e8edf2;border-radius:4px;}
+.edu-card.campus .mini-ui:after{left:37%;top:9px;width:42%;height:3px;background:#4a4a4a;box-shadow:0 8px 0 #d7d5d2,0 16px 0 #e7e5e1,0 25px 0 #e7e5e1;}
+.edu-card.workshops{left:3%;bottom:8%;width:clamp(190px,23vw,295px);height:174px;padding:17px 18px;background:#e88731;border:0;border-radius:2px;box-shadow:none;z-index:3;}
+.edu-card.organizations{right:3%;bottom:5%;width:clamp(230px,28vw,360px);height:190px;padding:19px 20px;background:#f2e7d9;border:0;border-radius:16px;box-shadow:none;z-index:3;}
+.edu-card.middle{left:3%;top:25%;width:clamp(165px,18vw,230px);height:122px;padding:13px 15px;background:#f2f2f1;border:0;border-radius:9px;box-shadow:0 8px 18px rgba(0,0,0,.06);z-index:1;}
+.edu-card.middle .mini-ui{right:10px;bottom:8px;width:52px;height:52px;border:0;border-radius:50%;background:#dfe7ef;box-shadow:none;}
+.edu-card.middle .mini-ui:before{left:12px;top:8px;width:28px;height:35px;border-radius:14px 14px 4px 4px;background:#fff;}
+.edu-card.middle .mini-ui:after{left:19px;top:22px;width:14px;height:2px;background:#a8b5c3;box-shadow:0 7px 0 #d2d8df,0 14px 0 #d2d8df;}
+.edu-card.curriculum{display:none;}
+@media(max-width:760px){
+ .outro-heading{top:13%;width:88vw;}
+ .outro-heading h1{font-size:clamp(38px,8vw,58px);}
+ .outro-person{height:27vh;max-width:24vw;bottom:-1%;}
+ #educationOutro.visible .outro-person{opacity:.55;}
+ .edu-card.students{left:3%;top:46%;width:34vw;height:142px;}
+ .edu-card.campus{right:3%;top:46%;width:34vw;height:142px;}
+ .edu-card.students h2,.edu-card.campus h2{font-size:15px;max-width:100%;}
+ .edu-card.students p,.edu-card.campus p{font-size:9px;max-width:100%;}
+ .edu-card.students .mini-ui,.edu-card.campus .mini-ui{display:none;}
+ .edu-card.workshops{left:3%;bottom:8%;width:37vw;height:132px;}
+ .edu-card.organizations{right:3%;bottom:7%;width:40vw;height:137px;}
+ .edu-card.middle{left:3%;top:29%;width:34vw;height:94px;padding:9px;}
+ .edu-card.middle .eyeline{font-size:7px;}.edu-card.middle h2{font-size:13px;max-width:100%;}.edu-card.middle p{font-size:8px;max-width:100%;}.edu-card.middle .mini-ui{display:none;}
+}
+
+
+/* Refined collage panels and a larger central illustration */
+.outro-person{height:min(54vh,560px);max-width:42vw;bottom:-4%;z-index:4;filter:grayscale(1) contrast(.84) brightness(1.1);}
+#educationOutro.visible .outro-person{opacity:.56;}
+.edu-card.students{left:3%;top:49%;width:clamp(220px,28vw,365px);height:190px;}
+.edu-card.students .mini-ui{width:30%;height:75%;right:1%;bottom:4px;}
+.edu-card.students h2{max-width:66%;font-size:clamp(20px,2vw,28px);}
+.edu-card.campus{right:3%;top:49%;width:clamp(225px,27vw,355px);height:190px;}
+.edu-card.campus h2{max-width:100%;font-size:clamp(20px,2vw,28px);}
+.edu-card.campus p{max-width:90%;}
+.edu-card.campus .mini-ui{right:0;bottom:0;width:65%;height:34%;}
+.edu-card.middle{left:3%;bottom:34%;top:auto;width:clamp(230px,28vw,360px);height:42px;padding:8px 15px;display:flex;align-items:center;background:#f7f7f5;border:0;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.045);transform:translateY(12px);}
+#educationOutro.visible .edu-card.middle{transform:translateY(0);}
+.edu-card.middle .eyeline{width:100%;font-size:9px;color:#56524d;}
+.edu-card.middle h2,.edu-card.middle p,.edu-card.middle .mini-ui{display:none;}
+.edu-card.workshops{left:3%;bottom:8%;width:clamp(190px,22vw,285px);height:200px;padding:17px 18px;background:#e9822d;border:0;border-radius:3px;box-shadow:none;z-index:3;}
+.edu-card.workshops h2{max-width:58%;font-size:clamp(20px,2vw,27px);}
+.edu-card.workshops p{max-width:58%;}
+.edu-card.workshops .mini-ui{right:11px;bottom:13px;width:37%;height:46%;background:#f4c17b;border:0;box-shadow:none;transform:rotate(7deg);}
+.edu-card.workshops .mini-ui:before{left:18%;top:18%;width:64%;height:54%;background:#f5ead9;clip-path:polygon(50% 0,100% 24%,88% 100%,12% 100%,0 24%);border-radius:0;}
+.edu-card.workshops .mini-ui:after{left:25%;top:45%;width:50%;height:4px;background:#d87b2f;box-shadow:0 9px 0 rgba(216,123,47,.48);}
+.edu-card.blue{left:12%;bottom:0;width:clamp(230px,29vw,380px);height:174px;padding:20px 22px;background:#3158de;color:#fff;border:0;border-radius:18px 18px 0 0;box-shadow:none;z-index:1;--tilt:0deg;transform:translateY(18px);}
+#educationOutro.visible .edu-card.blue{transform:translateY(0);}
+.edu-card.blue .eyeline,.edu-card.blue h2,.edu-card.blue p{color:#fff;}
+.edu-card.blue h2{max-width:58%;font-size:clamp(19px,1.9vw,25px);}
+.edu-card.blue p{max-width:56%;}
+.edu-card.blue .mini-ui{right:15px;bottom:16px;width:32%;height:43%;background:#5e7bf0;border:0;box-shadow:none;transform:rotate(-9deg);}
+.edu-card.blue .mini-ui:before{left:15%;top:20%;width:70%;height:57%;background:#b9c7ff;border-radius:50%;}
+.edu-card.blue .mini-ui:after{left:24%;top:43%;width:52%;height:4px;background:#fff;box-shadow:0 9px 0 rgba(255,255,255,.62);}
+.edu-card.organizations{right:3%;bottom:5%;width:clamp(245px,29vw,380px);height:205px;background:#f2e7d9;border:0;border-radius:20px 20px 20px 5px;box-shadow:none;z-index:3;}
+.edu-card.organizations h2{max-width:57%;font-size:clamp(20px,2vw,28px);color:#413875;}
+.edu-card.organizations p{max-width:55%;}
+.edu-card.organizations .mini-ui{right:13px;bottom:11px;width:34%;height:74%;background:#fff;border:0;border-radius:13px;box-shadow:0 8px 18px rgba(0,0,0,.12);}
+.edu-card.organizations .mini-ui:before{left:12%;top:12%;width:76%;height:42%;background:linear-gradient(135deg,#e8d4b9,#f4ece2);border-radius:4px;}
+.edu-card.organizations .mini-ui:after{left:14%;top:63%;width:28%;height:14px;background:#6555b7;border-radius:3px;box-shadow:30px 0 0 #f0c66c,0 20px 0 #e8e5e0,30px 20px 0 #e8e5e0;}
+.edu-card.curriculum{display:block;right:1.5%;top:20%;width:clamp(175px,18vw,235px);height:145px;padding:15px;background:#f0f0ef;border:0;border-radius:15px;box-shadow:none;z-index:1;}
+.edu-card.curriculum .eyeline{font-size:8px;}
+.edu-card.curriculum h2{font-size:18px;max-width:100%;}
+.edu-card.curriculum p{font-size:10px;max-width:100%;}
+.edu-card.curriculum .mini-ui{right:10px;bottom:10px;width:58%;height:35%;background:#fff;border:0;box-shadow:0 4px 12px rgba(0,0,0,.07);}
+.edu-card.curriculum .mini-ui:before{left:8px;top:8px;width:24%;height:60%;background:#dce4ec;}
+.edu-card.curriculum .mini-ui:after{left:38%;top:9px;width:45%;height:3px;background:#555;box-shadow:0 8px 0 #d5d3d0,0 16px 0 #e7e5e2;}
+@media(max-width:760px){
+ .outro-person{height:40vh;max-width:36vw;bottom:-2%;}
+ #educationOutro.visible .outro-person{opacity:.56;}
+ .edu-card.students{left:2%;top:47%;width:37vw;height:145px;}
+ .edu-card.campus{right:2%;top:47%;width:37vw;height:145px;}
+ .edu-card.students h2,.edu-card.campus h2{font-size:15px;max-width:100%;}
+ .edu-card.students p,.edu-card.campus p{font-size:9px;max-width:100%;}
+ .edu-card.students .mini-ui{display:none;}.edu-card.campus .mini-ui{width:55%;height:26%;}
+ .edu-card.middle{left:2%;bottom:31%;width:36vw;height:35px;padding:7px 9px;}
+ .edu-card.middle .eyeline{font-size:6.5px;}
+ .edu-card.workshops{left:2%;bottom:8%;width:39vw;height:143px;padding:12px;}
+ .edu-card.workshops h2{font-size:15px;}.edu-card.workshops p{font-size:8px;}
+ .edu-card.blue{left:9%;bottom:0;width:42vw;height:120px;padding:12px;}
+ .edu-card.blue h2{font-size:14px;}.edu-card.blue p{font-size:8px;}
+ .edu-card.organizations{right:2%;bottom:6%;width:43vw;height:148px;padding:12px;}
+ .edu-card.organizations h2{font-size:15px;}.edu-card.organizations p{font-size:8px;}
+ .edu-card.organizations .mini-ui{width:29%;height:65%;}
+ .edu-card.curriculum{right:2%;top:26%;width:34vw;height:110px;padding:10px;}
+ .edu-card.curriculum h2{font-size:13px;}.edu-card.curriculum p{font-size:8px;}.edu-card.curriculum .mini-ui{display:none;}
+}
+
+
+/* Persistent full-width navigation, visible from the first animation frame */
+.global-nav{position:absolute;z-index:30;top:0;left:0;width:100%;height:68px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,5vw,76px);background:rgba(255,255,255,.96);border-bottom:1px solid #eeece8;color:#222;font-family:var(--f-ui);}
+.global-brand{font-weight:850;font-size:14px;letter-spacing:.16em;color:inherit;text-decoration:none;}
+.global-links{display:flex;align-items:center;gap:clamp(18px,3vw,44px);}
+.global-links a{color:#393733;text-decoration:none;font-size:12px;opacity:.84;white-space:nowrap;}
+.global-nav{height:76px;padding:0 clamp(28px,6vw,92px);background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(47,42,34,.1);}
+.global-brand{display:flex;align-items:center;gap:10px;font-size:15px;letter-spacing:.18em;}
+.global-brand:before{content:"";width:19px;height:19px;display:block;background:#e89039;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);box-shadow:0 3px 8px rgba(190,111,34,.2);}
+.global-links{gap:clamp(20px,3vw,42px);}
+.global-links a{position:relative;font-size:12px;font-weight:600;letter-spacing:.01em;opacity:.76;transition:opacity .2s ease,color .2s ease;}
+.global-links a:hover{opacity:1;color:#c66e21;}
+.global-links a:last-child{padding:11px 19px;border-radius:999px;background:#222;color:#fff;opacity:1;box-shadow:0 5px 14px rgba(0,0,0,.12);}
+.global-links a:last-child:hover{background:#d9792b;color:#fff;}
+.global-nav{isolation:isolate;}
+.global-links .nav-dropdown{position:relative;display:flex;align-items:center;height:100%;}
+.global-links .nav-dropdown>.nav-trigger{display:flex;align-items:center;gap:6px;padding:0;border:0;background:transparent;color:#393733;font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.01em;opacity:.76;white-space:nowrap;cursor:pointer;}
+.global-links .nav-dropdown>.nav-trigger:after{content:"⌄";font-size:12px;line-height:1;opacity:.6;transform:translateY(-2px);}
+.global-links .nav-submenu{position:absolute;top:calc(100% - 7px);left:-18px;min-width:180px;padding:9px;background:#fff;border:1px solid #efede9;border-radius:14px;box-shadow:0 16px 35px rgba(35,30,23,.12);display:grid;gap:2px;opacity:0;visibility:hidden;transform:translateY(7px);transition:opacity .18s ease,transform .18s ease,visibility .18s;}
+.global-links .nav-dropdown:hover .nav-submenu,.global-links .nav-dropdown:focus-within .nav-submenu,.global-links .nav-dropdown.open .nav-submenu{opacity:1;visibility:visible;transform:translateY(0);}
+.global-links .nav-dropdown>.nav-trigger:hover{opacity:1;color:#c66e21;}
+.global-links .nav-submenu a{padding:10px 12px;border-radius:8px;font-size:12px;opacity:1;color:#393733;}
+.global-links .nav-submenu a:hover{background:#f7f3ed;color:#bd671e;}
+.global-menu-toggle{display:none;}
+.edu-icon{position:absolute;right:12px;bottom:10px;width:78px;height:78px;overflow:visible;}
+.edu-icon .line{fill:none;stroke:#38342e;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+.edu-icon .wash{fill:#ead9b9;stroke:#38342e;stroke-width:2;stroke-linejoin:round;}
+.edu-icon .accent{fill:none;stroke:#dc8a36;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
+.edu-icon .accent-fill{fill:#e39b4a;stroke:#38342e;stroke-width:1.5;}
+.edu-card .mini-ui{display:none!important;}
+.edu-card.students{left:3%;top:55%;width:clamp(220px,26vw,345px);height:104px;padding:5px 0;background:transparent;border:0;border-radius:0;box-shadow:none;z-index:2;transform:translateY(12px);}
+#educationOutro.visible .edu-card.students{transform:translateY(0);}
+.edu-card.students .eyeline,.edu-card.campus .eyeline{font-size:8px;letter-spacing:.13em;color:#827f79;}
+.edu-card.students h2,.edu-card.campus h2{font-size:clamp(17px,1.7vw,23px);line-height:1.12;max-width:68%;margin:6px 0 4px;}
+.edu-card.students p,.edu-card.campus p{font-size:10px;line-height:1.4;max-width:68%;}
+.edu-card.students .pill{margin-top:5px;padding:4px 9px;font-size:8px;}
+.edu-card.students .edu-icon,.edu-card.campus .edu-icon{width:64px;height:64px;right:3px;bottom:8px;}
+.edu-card.campus{right:3%;top:55%;width:clamp(220px,26vw,345px);height:104px;padding:5px 0;background:transparent;border:0;border-radius:0;box-shadow:none;z-index:2;transform:translateY(12px);}
+#educationOutro.visible .edu-card.campus{transform:translateY(0);}
+.edu-card.workshops{left:3%;top:70%;bottom:auto;width:clamp(190px,22vw,290px);height:112px;padding:13px 15px;background:#e9822d;border:0;border-radius:2px;box-shadow:none;z-index:3;}
+.edu-card.workshops h2{font-size:clamp(16px,1.6vw,22px);max-width:72%;margin:7px 0 4px;}
+.edu-card.workshops p{font-size:9px;max-width:72%;}
+.edu-card.workshops .eyeline{font-size:7px;color:rgba(255,255,255,.85);}
+.edu-card.workshops h2,.edu-card.workshops p{color:#fff;}
+.edu-card.workshops .edu-icon{width:54px;height:54px;right:9px;bottom:9px;}
+.edu-card.workshops .edu-icon .line{stroke:#613b1e;}.edu-card.workshops .edu-icon .wash{fill:#f5d59f;stroke:#613b1e;}.edu-card.workshops .edu-icon .accent{stroke:#a75723;}
+.edu-card.blue{left:3%;top:85%;bottom:auto;width:clamp(190px,22vw,290px);height:105px;padding:12px 15px;background:#3158de;color:#fff;border:0;border-radius:14px;box-shadow:none;z-index:3;transform:translateY(12px);}
+#educationOutro.visible .edu-card.blue{transform:translateY(0);}
+.edu-card.blue .eyeline,.edu-card.blue h2,.edu-card.blue p{color:#fff;}
+.edu-card.blue .eyeline{font-size:7px;opacity:.9;}
+.edu-card.blue h2{font-size:clamp(16px,1.55vw,21px);max-width:72%;margin:6px 0 3px;}
+.edu-card.blue p{font-size:9px;max-width:72%;}
+.edu-card.blue .edu-icon{width:53px;height:53px;right:9px;bottom:8px;}
+.edu-card.blue .edu-icon .line{stroke:#fff;}.edu-card.blue .edu-icon .wash{fill:#8fa5ff;stroke:#fff;}.edu-card.blue .edu-icon .accent{stroke:#ffd98d;}.edu-card.blue .edu-icon .accent-fill{fill:#ffd98d;stroke:#fff;}
+.edu-card.organizations{right:3%;top:70%;bottom:auto;width:clamp(210px,24vw,315px);height:112px;padding:13px 15px;background:#f2e7d9;border:0;border-radius:14px 14px 14px 3px;box-shadow:none;z-index:3;}
+.edu-card.organizations .eyeline,.edu-card.curriculum .eyeline{font-size:7px;}
+.edu-card.organizations h2,.edu-card.curriculum h2{font-size:clamp(16px,1.55vw,21px);max-width:72%;margin:7px 0 4px;color:#413875;}
+.edu-card.organizations p,.edu-card.curriculum p{font-size:9px;max-width:72%;}
+.edu-card.organizations .edu-icon{width:54px;height:54px;right:9px;bottom:8px;}
+.edu-card.organizations .edu-icon .wash{fill:#e4d5eb;}.edu-card.organizations .edu-icon .accent{stroke:#6656a6;}
+.edu-card.curriculum{display:block;right:3%;top:85%;bottom:auto;width:clamp(210px,24vw,315px);height:105px;padding:12px 15px;background:#f0f0ef;border:0;border-radius:14px;box-shadow:none;z-index:3;transform:translateY(12px);}
+#educationOutro.visible .edu-card.curriculum{transform:translateY(0);}
+.edu-card.curriculum .edu-icon{width:53px;height:53px;right:9px;bottom:8px;}
+@media(max-width:760px){
+ .global-nav{height:62px;padding:0 16px;}.global-brand{font-size:11px;gap:7px;letter-spacing:.12em;}.global-brand:before{width:14px;height:14px;}.global-links{gap:10px;}.global-links a{font-size:9px;}.global-links a:last-child{padding:8px 11px;}
+ .edu-icon{width:44px!important;height:44px!important;right:3px!important;bottom:7px!important;}
+ .edu-card.students,.edu-card.campus{top:55%;height:88px;width:36vw;}
+ .edu-card.students{left:2%;}.edu-card.campus{right:2%;}
+ .edu-card.students h2,.edu-card.campus h2{font-size:13px;max-width:76%;}.edu-card.students p,.edu-card.campus p{font-size:8px;max-width:76%;}
+ .edu-card.students .pill{font-size:7px;padding:3px 7px;}
+ .edu-card.workshops,.edu-card.blue{left:2%;width:41vw;height:92px;padding:9px 10px;}
+ .edu-card.workshops{top:70%;}.edu-card.blue{top:85%;}
+ .edu-card.workshops h2,.edu-card.blue h2,.edu-card.organizations h2,.edu-card.curriculum h2{font-size:13px;max-width:78%;margin:5px 0 2px;}
+ .edu-card.workshops p,.edu-card.blue p,.edu-card.organizations p,.edu-card.curriculum p{font-size:7px;max-width:78%;}
+ .edu-card.organizations,.edu-card.curriculum{right:2%;width:43vw;height:92px;padding:9px 10px;}
+ .edu-card.organizations{top:70%;}.edu-card.curriculum{top:85%;}
+ .edu-card.workshops .eyeline,.edu-card.blue .eyeline,.edu-card.organizations .eyeline,.edu-card.curriculum .eyeline{font-size:6px;}
+ .outro-person{height:38vh;max-width:33vw;bottom:-2%;}
+}
+@media(max-width:620px){
+ .global-nav{height:60px;}
+ .global-menu-toggle{display:flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border:1px solid #e8e4dd;border-radius:50%;background:#fff;color:#24221f;font-size:19px;cursor:pointer;}
+ .global-links{display:none;position:absolute;top:59px;left:10px;right:10px;padding:12px;background:rgba(255,255,255,.98);border:1px solid #ece9e3;border-radius:16px;box-shadow:0 18px 38px rgba(35,30,23,.12);align-items:stretch;gap:3px;}
+ .global-nav.menu-open .global-links{display:flex;flex-direction:column;}
+ .global-links>a,.global-links .nav-dropdown>.nav-trigger{padding:11px 12px!important;font-size:13px!important;border-radius:9px!important;background:transparent!important;color:#34312b!important;box-shadow:none!important;}
+ .global-links .nav-dropdown{height:auto;display:block;}
+ .global-links .nav-dropdown>.nav-trigger:after{margin-left:auto;}
+ .global-links .nav-submenu{position:static;display:none;min-width:0;padding:3px 0 5px 12px;border:0;border-radius:0;box-shadow:none;opacity:1;visibility:visible;transform:none;}
+ .global-links .nav-dropdown:hover .nav-submenu,.global-links .nav-dropdown:focus-within .nav-submenu,.global-links .nav-dropdown.open .nav-submenu{display:grid;}
+ .global-links .nav-submenu a{font-size:12px!important;padding:9px 12px;}
+ .global-links>a:last-child{margin-top:5px!important;background:#222!important;color:#fff!important;text-align:center;}
+}
+
+
+/* Remove the redundant grade strip; the student banner already covers every school level. */
+.edu-card.middle{display:none!important;}
+
+
+/* Keep banner text and illustration in separate layout columns at every viewport size */
+.edu-card{display:grid!important;grid-template-columns:minmax(0,1fr) 64px;grid-template-rows:minmax(0,1fr);column-gap:12px;align-items:center;box-sizing:border-box;overflow:hidden;}
+.edu-card .banner-copy{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0;max-width:100%;position:relative;z-index:1;}
+.edu-card .banner-copy .eyeline{display:flex;align-items:center;justify-content:space-between;gap:7px;width:100%;max-width:100%;white-space:normal;}
+.edu-card .banner-copy h2,.edu-card .banner-copy p{display:block;width:auto;max-width:100%!important;min-width:0;word-break:keep-all;overflow-wrap:normal;}
+.edu-card .banner-copy h2{margin:6px 0 4px;line-height:1.15;}
+.edu-card .banner-copy p{margin:0;line-height:1.4;}
+.edu-card .banner-copy .pill{margin-top:6px;white-space:nowrap;}
+.edu-card .edu-icon{position:static!important;grid-column:2;grid-row:1;align-self:center;justify-self:center;width:58px!important;height:58px!important;max-width:100%;margin:0;overflow:visible;}
+.edu-card.students,.edu-card.campus{grid-template-columns:minmax(0,1fr) 64px;}
+.edu-card.workshops,.edu-card.blue,.edu-card.organizations,.edu-card.curriculum{grid-template-columns:minmax(0,1fr) 58px;}
+.edu-card.students .banner-copy h2,.edu-card.campus .banner-copy h2{font-size:clamp(17px,1.7vw,23px);}
+.edu-card.workshops .banner-copy h2,.edu-card.blue .banner-copy h2,.edu-card.organizations .banner-copy h2,.edu-card.curriculum .banner-copy h2{font-size:clamp(15px,1.5vw,21px);}
+@media(max-width:760px){
+ .edu-card{grid-template-columns:minmax(0,1fr) 38px;column-gap:5px;}
+ .edu-card.students,.edu-card.campus{grid-template-columns:minmax(0,1fr) 38px;}
+ .edu-card.workshops,.edu-card.blue,.edu-card.organizations,.edu-card.curriculum{grid-template-columns:minmax(0,1fr) 36px;}
+ .edu-card .edu-icon{width:36px!important;height:36px!important;}
+ .edu-card.students .banner-copy h2,.edu-card.campus .banner-copy h2{font-size:12px;}
+ .edu-card.workshops .banner-copy h2,.edu-card.blue .banner-copy h2,.edu-card.organizations .banner-copy h2,.edu-card.curriculum .banner-copy h2{font-size:12px;}
+ .edu-card .banner-copy .eyeline{font-size:6px;letter-spacing:.04em;gap:3px;}
+ .edu-card .banner-copy p{font-size:7px;}
+ .edu-card .banner-copy .pill{font-size:6px;padding:3px 6px;}
+}
+
+
+/* Match the reference's editorial collage: clear center portrait, paired side banners, varied treatments */
+.outro-heading{top:11%;width:min(840px,76vw);z-index:7;}
+.outro-heading h1{font-size:clamp(48px,6vw,88px);line-height:1.01;letter-spacing:-.07em;margin:11px 0 12px;}
+.outro-person{height:min(60vh,570px);max-width:46vw;bottom:-4%;z-index:4;filter:grayscale(1) contrast(.82) brightness(1.1);}
+#educationOutro.visible .outro-person{opacity:.62;}
+.edu-card.middle{display:none!important;}
+.edu-card.students,.edu-card.campus{top:50%;width:clamp(230px,25vw,400px);height:150px;padding:7px 0;background:transparent;border:0;border-radius:0;box-shadow:none;z-index:2;}
+.edu-card.students{left:3%;}.edu-card.campus{right:2%;}
+.edu-card.students,.edu-card.campus{grid-template-columns:minmax(0,1fr) 88px;column-gap:12px;}
+.edu-card.students .banner-copy h2,.edu-card.campus .banner-copy h2{font-size:clamp(18px,1.8vw,25px);line-height:1.08;margin:8px 0 6px;}
+.edu-card.students .banner-copy p,.edu-card.campus .banner-copy p{font-size:10px;line-height:1.45;}
+.edu-card.students .banner-copy .eyeline,.edu-card.campus .banner-copy .eyeline{font-size:8px;letter-spacing:.12em;color:#79756f;}
+.edu-card.students .edu-icon,.edu-card.campus .edu-icon{width:88px!important;height:88px!important;}
+.edu-card.students .edu-icon .line,.edu-card.campus .edu-icon .line{stroke:#282724;stroke-width:2.1;}
+.edu-card.workshops,.edu-card.blue,.edu-card.organizations,.edu-card.curriculum{top:auto;bottom:auto;height:122px;padding:12px 15px;}
+.edu-card.workshops{left:3%;top:70%;width:clamp(210px,23vw,350px);border:0;border-radius:2px;background:#e9822d;box-shadow:none;z-index:3;}
+.edu-card.workshops .banner-copy h2,.edu-card.blue .banner-copy h2,.edu-card.organizations .banner-copy h2,.edu-card.curriculum .banner-copy h2{font-size:clamp(16px,1.55vw,22px);line-height:1.1;margin:7px 0 4px;}
+.edu-card.workshops .banner-copy .eyeline{font-size:7px;color:rgba(255,255,255,.86);}
+.edu-card.workshops .banner-copy h2,.edu-card.workshops .banner-copy p{color:#fff;}
+.edu-card.workshops .banner-copy p{font-size:9px;}
+.edu-card.workshops .edu-icon{width:63px!important;height:63px!important;}
+.edu-card.workshops .edu-icon .wash{fill:#f4d39b;stroke:#5a3a23;}.edu-card.workshops .edu-icon .line{stroke:#5a3a23;}.edu-card.workshops .edu-icon .accent{stroke:#a95724;}
+.edu-card.blue{left:3%;top:86%;width:clamp(210px,23vw,350px);height:100px;border:0;border-radius:13px;background:#3158de;color:#fff;box-shadow:none;z-index:3;}
+.edu-card.blue .banner-copy .eyeline,.edu-card.blue .banner-copy h2,.edu-card.blue .banner-copy p{color:#fff;}
+.edu-card.blue .banner-copy .eyeline{font-size:7px;}
+.edu-card.blue .banner-copy p{font-size:9px;}
+.edu-card.blue .edu-icon{width:58px!important;height:58px!important;}
+.edu-card.blue .edu-icon .line{stroke:#fff;}.edu-card.blue .edu-icon .wash{fill:#94a9ff;stroke:#fff;}.edu-card.blue .edu-icon .accent{stroke:#ffe2a1;}.edu-card.blue .edu-icon .accent-fill{fill:#ffe2a1;stroke:#fff;}
+.edu-card.organizations{right:2%;top:70%;width:clamp(220px,25vw,380px);height:122px;border:0;border-radius:16px 16px 16px 4px;background:#f2e7d9;box-shadow:none;z-index:3;}
+.edu-card.organizations .banner-copy h2{color:#403676;}
+.edu-card.organizations .banner-copy p,.edu-card.curriculum .banner-copy p{font-size:9px;}
+.edu-card.organizations .edu-icon,.edu-card.curriculum .edu-icon{width:61px!important;height:61px!important;}
+.edu-card.organizations .edu-icon .wash{fill:#e4d5eb;}.edu-card.organizations .edu-icon .accent{stroke:#6656a6;}
+.edu-card.curriculum{display:grid!important;right:2%;top:86%;width:clamp(220px,25vw,380px);height:100px;border:0;border-radius:13px;background:#f0f0ef;box-shadow:none;z-index:3;}
+.edu-card.curriculum .banner-copy .eyeline{font-size:7px;color:#7d7a74;}
+.edu-card.curriculum .edu-icon .wash{fill:#e8d8bd;}
+@media(max-width:760px){
+ .outro-heading{top:12%;width:88vw;}.outro-heading h1{font-size:clamp(40px,8.2vw,60px);}
+ .outro-person{height:55vh;max-width:42vw;bottom:-2%;}#educationOutro.visible .outro-person{opacity:.62;}
+ .edu-card.students,.edu-card.campus{top:51%;width:29vw;height:140px;grid-template-columns:minmax(0,1fr) 48px;column-gap:4px;padding:4px 0;}
+ .edu-card.students{left:2%;}.edu-card.campus{right:2%;}
+ .edu-card.students .banner-copy h2,.edu-card.campus .banner-copy h2{font-size:13px;}.edu-card.students .banner-copy p,.edu-card.campus .banner-copy p{font-size:8px;}
+ .edu-card.students .edu-icon,.edu-card.campus .edu-icon{width:48px!important;height:58px!important;}
+ .edu-card.workshops,.edu-card.blue{left:2%;width:34vw;height:103px;padding:8px 9px;grid-template-columns:minmax(0,1fr) 34px;column-gap:4px;}
+ .edu-card.workshops{top:70%;}.edu-card.blue{top:85%;height:94px;}
+ .edu-card.organizations,.edu-card.curriculum{right:2%;width:34vw;height:103px;padding:8px 9px;grid-template-columns:minmax(0,1fr) 34px;column-gap:4px;}
+ .edu-card.organizations{top:70%;}.edu-card.curriculum{top:85%;height:94px;}
+ .edu-card.workshops .banner-copy h2,.edu-card.blue .banner-copy h2,.edu-card.organizations .banner-copy h2,.edu-card.curriculum .banner-copy h2{font-size:12px;}
+ .edu-card.workshops .banner-copy p,.edu-card.blue .banner-copy p,.edu-card.organizations .banner-copy p,.edu-card.curriculum .banner-copy p{font-size:7px;}
+ .edu-card.workshops .edu-icon,.edu-card.blue .edu-icon,.edu-card.organizations .edu-icon,.edu-card.curriculum .edu-icon{width:34px!important;height:40px!important;}
+}
+
+
+.edu-card.workshops,.edu-card.organizations{top:68%;height:108px;}
+.edu-card.blue,.edu-card.curriculum{top:85%;height:100px;}
+@media(max-width:760px){.edu-card.workshops,.edu-card.organizations{top:68%;height:98px;}.edu-card.blue,.edu-card.curriculum{top:84%;height:92px;}}
+
+
+/* Final spacing pass: protect copy from icons and stagger the collage */
+.edu-card.students{left:3%;top:49%;width:clamp(230px,25vw,390px);height:128px;}
+.edu-card.campus{right:3.5%;top:46%;width:clamp(230px,25vw,390px);height:128px;}
+.edu-card.students,.edu-card.campus{grid-template-columns:minmax(0,1fr) 76px;column-gap:10px;}
+.edu-card.students .edu-icon,.edu-card.campus .edu-icon{width:76px!important;height:82px!important;}
+.edu-card.workshops{left:3%;top:68%;width:clamp(230px,25vw,390px);height:122px;padding:12px 14px;}
+.edu-card.workshops{grid-template-columns:minmax(0,1fr) 58px;column-gap:9px;}
+.edu-card.workshops .edu-icon{width:58px!important;height:58px!important;}
+.edu-card.workshops .banner-copy h2{font-size:clamp(16px,1.45vw,21px);margin:5px 0 3px;line-height:1.08;}
+.edu-card.workshops .banner-copy p{font-size:9px;line-height:1.3;}
+.edu-card.workshops .banner-copy .pill{margin-top:4px;padding:3px 8px;}
+.edu-card.blue{left:2%;top:86%;width:clamp(210px,23vw,360px);height:96px;padding:10px 13px;grid-template-columns:minmax(0,1fr) 52px;column-gap:8px;}
+.edu-card.blue .edu-icon{width:52px!important;height:52px!important;}
+.edu-card.organizations{right:3%;top:69%;width:clamp(230px,25vw,390px);height:122px;padding:12px 14px;grid-template-columns:minmax(0,1fr) 58px;column-gap:9px;}
+.edu-card.organizations .edu-icon{width:58px!important;height:58px!important;}
+.edu-card.curriculum{right:2%;top:86%;width:clamp(230px,25vw,390px);height:96px;padding:10px 13px;grid-template-columns:minmax(0,1fr) 52px;column-gap:8px;}
+.edu-card.curriculum .edu-icon{width:52px!important;height:52px!important;}
+.edu-card.students .banner-copy h2,.edu-card.campus .banner-copy h2{font-size:clamp(17px,1.7vw,23px);line-height:1.07;}
+#educationOutro.visible .edu-card.students{transform:translateY(0) rotate(-1.4deg);}
+#educationOutro.visible .edu-card.campus{transform:translateY(0) rotate(1.2deg);}
+#educationOutro.visible .edu-card.workshops{transform:translateY(0) rotate(-1deg);}
+#educationOutro.visible .edu-card.blue{transform:translateY(0) rotate(.9deg);}
+#educationOutro.visible .edu-card.organizations{transform:translateY(0) rotate(1.3deg);}
+#educationOutro.visible .edu-card.curriculum{transform:translateY(0) rotate(-.8deg);}
+@media(max-width:760px){
+ .edu-card.students,.edu-card.campus{width:29vw;height:130px;grid-template-columns:minmax(0,1fr) 42px;column-gap:3px;}
+ .edu-card.students{left:2%;top:50%;}.edu-card.campus{right:2%;top:47%;}
+ .edu-card.students .edu-icon,.edu-card.campus .edu-icon{width:42px!important;height:55px!important;}
+ .edu-card.workshops{left:2%;top:69%;width:38vw;height:108px;padding:8px 9px;grid-template-columns:minmax(0,1fr) 34px;column-gap:4px;}
+ .edu-card.workshops .edu-icon{width:34px!important;height:40px!important;}
+ .edu-card.workshops .banner-copy .pill{display:none;}
+ .edu-card.blue{left:2%;top:85%;width:35vw;height:92px;padding:8px 9px;grid-template-columns:minmax(0,1fr) 32px;column-gap:4px;}
+ .edu-card.blue .edu-icon{width:32px!important;height:38px!important;}
+ .edu-card.organizations{right:2%;top:69%;width:39vw;height:108px;padding:8px 9px;grid-template-columns:minmax(0,1fr) 34px;column-gap:4px;}
+ .edu-card.organizations .edu-icon{width:34px!important;height:40px!important;}
+ .edu-card.curriculum{right:2%;top:85%;width:39vw;height:92px;padding:8px 9px;grid-template-columns:minmax(0,1fr) 32px;column-gap:4px;}
+ .edu-card.curriculum .edu-icon{width:32px!important;height:38px!important;}
+ .edu-card.workshops .banner-copy h2,.edu-card.blue .banner-copy h2,.edu-card.organizations .banner-copy h2,.edu-card.curriculum .banner-copy h2{font-size:11px;line-height:1.08;margin:4px 0 2px;}
+ .edu-card.workshops .banner-copy p,.edu-card.blue .banner-copy p,.edu-card.organizations .banner-copy p,.edu-card.curriculum .banner-copy p{font-size:7px;}
+ .edu-card.workshops,.edu-card.blue,.edu-card.organizations,.edu-card.curriculum{overflow:visible;}
+}
+
+/* Give the orange project banner enough room, then loosen the collage rhythm. */
+.edu-card.workshops{left:2%;top:66%;width:clamp(270px,29vw,430px);height:138px;padding:15px 18px;overflow:visible;grid-template-columns:minmax(0,1fr) 62px;column-gap:12px;}
+.edu-card.workshops .banner-copy{overflow:visible;}
+.edu-card.workshops .banner-copy .eyeline{font-size:8px;letter-spacing:.08em;gap:10px;}
+.edu-card.workshops .banner-copy h2{font-size:clamp(18px,1.7vw,24px);line-height:1.16;margin:8px 0 5px;overflow:visible;}
+.edu-card.workshops .banner-copy p{font-size:10px;line-height:1.4;}
+.edu-card.workshops .banner-copy .pill{margin-top:7px;padding:4px 9px;}
+.edu-card.workshops .edu-icon{width:62px!important;height:62px!important;}
+.edu-card.organizations{right:1.5%;top:64%;}
+.edu-card.blue{left:4%;top:85%;}
+.edu-card.curriculum{right:4%;top:82%;}
+#educationOutro.visible .edu-card.workshops{transform:translateY(0) rotate(-2.2deg);}
+#educationOutro.visible .edu-card.organizations{transform:translateY(0) rotate(1.8deg);}
+#educationOutro.visible .edu-card.blue{transform:translateY(0) rotate(1.4deg);}
+#educationOutro.visible .edu-card.curriculum{transform:translateY(0) rotate(-1.6deg);}
+@media(max-width:760px){
+ .edu-card.workshops{left:2%;top:68%;width:43vw;height:116px;padding:9px 10px;grid-template-columns:minmax(0,1fr) 34px;column-gap:5px;}
+ .edu-card.workshops .banner-copy .eyeline{font-size:6px;letter-spacing:.04em;}
+ .edu-card.workshops .banner-copy h2{font-size:12px;line-height:1.16;margin:5px 0 3px;}
+ .edu-card.workshops .banner-copy p{font-size:7px;line-height:1.35;}
+ .edu-card.workshops .edu-icon{width:34px!important;height:40px!important;}
+ .edu-card.workshops .banner-copy .pill{display:none;}
+ .edu-card.organizations{right:2%;top:66%;width:39vw;}
+ .edu-card.blue{left:2%;top:85%;width:37vw;}
+ .edu-card.curriculum{right:3%;top:82%;width:39vw;}
+}
+
+/* Recompose the panels like the supplied portfolio: staggered around the portrait. */
+.edu-card.students{left:2%;top:38%;width:clamp(240px,24vw,340px);}
+.edu-card.campus{right:3%;top:30%;width:clamp(230px,22vw,310px);}
+.edu-card.workshops{left:5%;top:65%;width:clamp(270px,27vw,405px);}
+.edu-card.organizations{right:2%;top:67%;width:clamp(235px,23vw,350px);}
+.edu-card.blue{left:8%;top:84%;width:clamp(220px,23vw,340px);}
+.edu-card.curriculum{right:5%;top:84%;width:clamp(230px,24vw,360px);}
+#educationOutro.visible .edu-card.students{transform:translateY(0) rotate(-2.4deg);}
+#educationOutro.visible .edu-card.campus{transform:translateY(0) rotate(1.8deg);}
+#educationOutro.visible .edu-card.workshops{transform:translateY(0) rotate(-1.7deg);}
+#educationOutro.visible .edu-card.organizations{transform:translateY(0) rotate(2deg);}
+#educationOutro.visible .edu-card.blue{transform:translateY(0) rotate(1.9deg);}
+#educationOutro.visible .edu-card.curriculum{transform:translateY(0) rotate(-1.3deg);}
+@media(max-width:760px){
+ .edu-card.students{left:1%;top:43%;width:31vw;}
+ .edu-card.campus{right:1%;top:39%;width:31vw;}
+ .edu-card.workshops{left:3%;top:66%;width:43vw;}
+ .edu-card.organizations{right:2%;top:66%;width:39vw;}
+ .edu-card.blue{left:3%;top:84%;width:37vw;}
+ .edu-card.curriculum{right:3%;top:81%;width:39vw;}
+}
+
+/* Remove the tiny eyebrow labels and tighten the vertical rhythm of the collage. */
+.edu-card .banner-copy>.eyeline{display:none!important;}
+.edu-card.students{top:43%;left:3%;}
+.edu-card.campus{top:40%;right:3%;}
+.edu-card.workshops{top:63%;left:4%;}
+.edu-card.organizations{top:65%;right:3%;}
+.edu-card.blue{top:77%;left:9%;}
+.edu-card.curriculum{top:75%;right:7%;}
+@media(max-width:760px){
+ .edu-card.students{top:47%;left:2%;}
+ .edu-card.campus{top:44%;right:2%;}
+ .edu-card.workshops{top:65%;left:3%;}
+ .edu-card.organizations{top:66%;right:2%;}
+ .edu-card.blue{top:79%;left:4%;}
+ .edu-card.curriculum{top:77%;right:4%;}
+}
+.edu-card.organizations{top:57%;}
+@media(max-width:760px){.edu-card.organizations{top:60%;}}
+
+
+/* Scrollable homepage below the animated learning journey */
+html{height:auto;scroll-behavior:smooth;scroll-padding-top:84px;}
+body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;background:#fff;}
+.app{height:auto;min-height:100vh;overflow:visible;background:#fff;}
+.stage{height:100svh;min-height:640px;overflow:hidden;}
+.global-nav{position:fixed;}
+.home-content{background:#fff;color:#26241f;font-family:var(--f-ui);}
+.home-content *{box-sizing:border-box;}
+.content-wrap{width:min(1160px,calc(100% - 96px));margin:0 auto;}
+.home-content section{scroll-margin-top:82px;}
+.section-kicker{display:flex;align-items:center;gap:12px;color:#89847b;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;}
+.section-kicker i{display:block;width:26px;height:1px;background:#d69043;}
+.about-section{padding-top:145px;padding-bottom:112px;}
+.about-grid{display:grid;grid-template-columns:1.18fr .82fr;gap:7vw;align-items:end;margin:32px 0 70px;}
+.about-grid h2,.section-heading h2,.curriculum-layout h2,.stories-heading h2,.contact-inner h2{font-size:clamp(38px,5.2vw,70px);line-height:1.08;letter-spacing:-.065em;margin:0;font-weight:760;word-break:keep-all;}
+.about-grid h2 em,.curriculum-layout h2 em{font-style:normal;color:#d87b2d;}
+.about-copy{padding:0 0 5px;max-width:405px;}
+.about-copy p,.section-heading>p,.curriculum-lead,.stories-heading>p,.contact-inner p{font-size:15px;line-height:1.85;color:#767168;word-break:keep-all;margin:0 0 25px;}
+.text-link{display:inline-flex;align-items:center;gap:18px;padding-bottom:7px;border-bottom:1px solid #35322d;color:#282621;text-decoration:none;font-size:13px;font-weight:700;}
+.text-link span{font-size:18px;transition:transform .2s ease;}.text-link:hover span{transform:translate(3px,-3px);}
+.principle-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #e9e6df;}
+.principle-row>div{display:flex;align-items:center;gap:16px;padding:20px 15px 0 0;color:#49463f;font-size:14px;}
+.principle-row b{font-size:10px;letter-spacing:.08em;color:#d88638;}
+.program-section{padding:110px 0 125px;background:#f5f3ee;}
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:34px;margin-bottom:45px;}
+.section-heading h2{font-size:clamp(36px,4.5vw,60px);margin-top:22px;}
+.section-heading>p{margin:0 0 6px;max-width:320px;font-size:13px;}
+.program-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.program-card{position:relative;isolation:isolate;min-height:330px;padding:26px 25px 24px;overflow:hidden;background:#fff;border-radius:4px 34px 4px 4px;display:flex;flex-direction:column;align-items:flex-start;}
+.program-card:before{content:"";position:absolute;z-index:-1;width:210px;height:210px;right:-76px;bottom:-92px;border:1px solid rgba(69,57,40,.14);border-radius:50%;box-shadow:0 0 0 22px rgba(255,255,255,.12),0 0 0 48px rgba(255,255,255,.08);}
+.program-student{background:#fff;}.program-campus{background:#e98232;color:#fff;border-radius:34px 4px 34px 4px;}.program-org{background:#3158de;color:#fff;border-radius:4px 4px 34px 4px;}
+.program-top{width:100%;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.14em;font-weight:700;color:#8c867e;}
+.program-campus .program-top,.program-org .program-top{color:rgba(255,255,255,.76);}
+.program-mark{font-size:22px;color:#df8a36;}.program-campus .program-mark,.program-org .program-mark{color:#fff;}
+.program-card h3{font-size:clamp(24px,2.25vw,32px);line-height:1.2;letter-spacing:-.05em;margin:46px 0 12px;position:relative;z-index:1;}
+.program-card p{max-width:290px;font-size:13px;line-height:1.7;color:#777168;margin:0 0 25px;position:relative;z-index:1;word-break:keep-all;}
+.program-campus p,.program-org p{color:rgba(255,255,255,.82);}
+.program-card>a{display:inline-flex;align-items:center;gap:12px;margin-top:auto;padding-bottom:5px;border-bottom:1px solid currentColor;color:inherit;text-decoration:none;font-size:12px;font-weight:700;position:relative;z-index:1;}
+.program-card>a span{font-size:17px;}.program-doodle{position:absolute;right:18px;bottom:64px;font-size:94px;line-height:1;color:rgba(219,139,60,.12);font-weight:300;}
+.program-campus .program-doodle,.program-org .program-doodle{color:rgba(255,255,255,.16);}
+.program-section .section-kicker{color:#837e74;}
+.curriculum-section{padding:128px 0 130px;background:#fff;}
+.curriculum-layout{display:grid;grid-template-columns:.92fr 1.08fr;gap:8vw;align-items:start;}
+.curriculum-layout h2{font-size:clamp(38px,4.6vw,62px);margin:27px 0 20px;}
+.curriculum-lead{font-size:14px;max-width:385px;margin-bottom:25px;}
+.steps-list{border-top:1px solid #e8e5df;}
+.steps-list article{display:grid;grid-template-columns:34px 1fr 22px;gap:15px;align-items:start;padding:20px 0;border-bottom:1px solid #e8e5df;}
+.steps-list article>span{padding-top:4px;color:#d58132;font-size:10px;font-weight:800;letter-spacing:.08em;}
+.steps-list h3{font-size:17px;letter-spacing:-.035em;margin:0 0 5px;}.steps-list p{font-size:12px;line-height:1.65;color:#817c73;margin:0;}.steps-list b{font-weight:400;color:#b3ada3;}
+.stories-section{padding:115px 0 125px;background:#292823;color:#fff;}
+.stories-section .section-kicker{color:#bbb5a9;}.stories-section .section-kicker i{background:#e98a37;}
+.stories-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin:27px 0 45px;}
+.stories-heading h2{font-size:clamp(38px,4.5vw,60px);}.stories-heading>p{font-size:12px;color:#c3beb3;margin:0 0 4px;}
+.story-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.24);border-bottom:1px solid rgba(255,255,255,.24);}
+.story-strip article{position:relative;min-height:225px;padding:23px 25px 25px 0;border-right:1px solid rgba(255,255,255,.2);}
+.story-strip article+article{padding-left:25px;}.story-strip article:last-child{border:0;}
+.story-strip article>span{font-size:9px;letter-spacing:.16em;color:#e9a05b;}.story-strip h3{font-size:26px;line-height:1.25;letter-spacing:-.045em;margin:26px 0 10px;}.story-strip p{font-size:12px;line-height:1.6;color:#c3beb3;max-width:240px;margin:0;}.story-strip b{position:absolute;right:20px;bottom:21px;color:#e9a05b;font-size:20px;font-weight:400;}
+.contact-section{position:relative;overflow:hidden;padding:90px 0;background:#e98232;color:#fff;}
+.contact-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:30px;}
+.contact-inner .section-kicker{color:rgba(255,255,255,.75);}.contact-inner h2{font-size:clamp(38px,4.8vw,62px);margin:20px 0 14px;}.contact-inner p{color:rgba(255,255,255,.83);font-size:13px;margin:0;}
+.contact-button{display:inline-flex;align-items:center;gap:24px;padding:17px 22px;background:#fff;color:#28241f;text-decoration:none;font-size:13px;font-weight:700;border-radius:2px 18px 2px 18px;white-space:nowrap;transition:transform .2s ease,box-shadow .2s ease;}
+.contact-button:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(72,43,19,.18);}.contact-button span{font-size:18px;}
+.contact-orbit{position:absolute;right:16%;top:-140px;width:390px;height:390px;border:1px solid rgba(255,255,255,.22);border-radius:50%;display:grid;place-items:center;font-size:270px;font-weight:800;color:rgba(255,255,255,.08);}
+.site-footer{padding:32px 0;background:#fff;}.site-footer>.content-wrap{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;}
+.footer-brand{display:flex;align-items:center;gap:16px;text-decoration:none;color:#282621;font-size:13px;font-weight:850;letter-spacing:.16em;}.footer-brand span{font-size:11px;font-weight:400;letter-spacing:0;color:#8b867d;}
+.footer-links{display:flex;gap:22px;}.footer-links a{font-size:11px;color:#68645c;text-decoration:none;}.site-footer small{grid-column:1/-1;padding-top:18px;border-top:1px solid #eeeae3;color:#9a958c;font-size:9px;letter-spacing:.08em;}
+@media(max-width:760px){
+ .stage{min-height:600px;}
+ .content-wrap{width:calc(100% - 40px);}
+ .about-section{padding:104px 0 76px;}.about-grid{grid-template-columns:1fr;gap:24px;margin:24px 0 40px;}.about-grid h2,.section-heading h2,.curriculum-layout h2,.stories-heading h2,.contact-inner h2{font-size:clamp(37px,9vw,55px);}.about-copy{max-width:520px;}.about-copy p{font-size:14px;margin-bottom:18px;}.principle-row>div{gap:9px;padding-right:4px;font-size:11px;}
+ .program-section{padding:78px 0 82px;}.section-heading{display:block;margin-bottom:29px;}.section-heading h2{margin-top:17px;}.section-heading>p{margin-top:18px;font-size:12px;}.program-grid{grid-template-columns:1fr;gap:12px;}.program-card{min-height:260px;padding:22px;}.program-card h3{margin:30px 0 9px;font-size:27px;}.program-card p{font-size:12px;margin-bottom:18px;}
+ .curriculum-section{padding:82px 0;}.curriculum-layout{grid-template-columns:1fr;gap:42px;}.curriculum-layout h2{margin:20px 0 14px;}.curriculum-lead{font-size:13px;}
+ .stories-section{padding:78px 0 82px;}.stories-heading{display:block;margin:22px 0 28px;}.stories-heading>p{margin-top:15px;}.story-strip{grid-template-columns:1fr;}.story-strip article,.story-strip article+article{min-height:190px;padding:20px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.2);}.story-strip article:last-child{border-bottom:0;}.story-strip h3{font-size:23px;margin:19px 0 8px;}
+ .contact-section{padding:68px 0;}.contact-inner{align-items:flex-start;flex-direction:column;}.contact-button{padding:15px 17px;}.contact-orbit{right:-95px;top:-80px;width:280px;height:280px;font-size:190px;}
+ .site-footer>.content-wrap{grid-template-columns:1fr;}.footer-links{flex-wrap:wrap;gap:12px 18px;}.site-footer small{grid-column:auto;}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.text-link span,.contact-button{transition:none}}
+</style>
+
+<div class="app">
+  <div class="stage" id="stage">
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg" aria-label="한 아이가 연필로 그려진 뒤 굽이진 길을 걸으며 초등학생에서 직장인으로 자라는 애니메이션">
+      <defs>
+        <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="wash" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <clipPath id="shirtClip"><path id="shirtClipPath"/></clipPath>
+      </defs>
+      <g id="world">
+        <g id="bgLayer"></g>
+        <g id="roadLayer" filter="url(#pencil)"></g>
+        <g id="bldLayer"></g>
+        <g id="shadowLayer"></g>
+        <g id="charWrap"><g id="char"></g><g id="skel"></g></g>
+        <g id="penLayer"></g>
+      </g>
+    </svg>
+    <canvas class="grain" id="grain" aria-hidden="true"></canvas>
+    <nav class="global-nav" id="global-top" aria-label="비하이브 주요 메뉴"><a class="global-brand" href="#global-top">BEEHIVE</a><button class="global-menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryLinks">☰</button><div class="global-links" id="primaryLinks"><a href="#about">비하이브 소개</a><div class="nav-dropdown"><button class="nav-trigger" type="button" aria-expanded="false">교육 프로그램</button><div class="nav-submenu"><a href="#students">초등 교육</a><a href="#students">중등 교육</a><a href="#students">고등 교육</a><a href="#campus">대학·기관 교육</a><a href="#organizations">기업·조직 교육</a></div></div><a href="#curriculum">커리큘럼</a><a href="#stories">교육 사례</a><a href="#contact">교육 문의</a></div></nav><script>(function(){const n=document.querySelector('.global-nav'),m=n.querySelector('.global-menu-toggle'),d=n.querySelector('.nav-dropdown'),t=n.querySelector('.nav-trigger');m.addEventListener('click',()=>{const open=n.classList.toggle('menu-open');m.setAttribute('aria-expanded',open);m.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기');m.textContent=open?'×':'☰'});t.addEventListener('click',()=>{const open=d.classList.toggle('open');t.setAttribute('aria-expanded',open)});n.querySelectorAll('.global-links a').forEach(a=>a.addEventListener('click',()=>{n.classList.remove('menu-open');d.classList.remove('open');m.setAttribute('aria-expanded','false');t.setAttribute('aria-expanded','false');m.setAttribute('aria-label','메뉴 열기');m.textContent='☰'}))})();</script>
+    <section id="educationOutro" aria-label="비하이브가 함께하는 교육 분야">
+      <div class="outro-inner">
+        <header class="outro-heading"><span class="outro-eyebrow">BEEHIVE · LEARNING JOURNEY</span><h1>비하이브는<br>배움의 가능성을<br>함께 키웁니다</h1><p>학생부터 대학·기관, 기업까지<br>각자의 다음 성장을 위한 교육을 만듭니다.</p></header>
+        <article id="outro-students" class="edu-card students"><div class="banner-copy"><span class="eyeline"><span>STUDENT LEARNING</span><span>초 · 중 · 고</span></span><h2>호기심에서 시작하는 배움</h2><p>초등부터 고등까지, 학생을 위한 교육</p><span class="pill">학생 교육 ↗</span></div><svg class="edu-icon phone-pair" viewBox="0 0 140 120" aria-hidden="true"><g class="line"><rect x="17" y="12" width="47" height="91" rx="8"/><rect x="72" y="21" width="49" height="87" rx="8"/></g><rect class="accent-fill" x="23" y="23" width="35" height="28" rx="3"/><rect class="wash" x="78" y="32" width="37" height="26" rx="3"/><path class="line" d="M24 59h32M24 67h27M24 75h31M79 66h35M79 74h27M79 82h32M34 94h13M89 99h14"/><circle class="accent-fill" cx="41" cy="37" r="7"/><path class="line" d="M90 46c5-8 15-8 20 0"/></svg></article>
+        <article class="edu-card middle"><span class="eyeline"><span>STUDENT LEARNING</span><span>중 · 고등</span></span><h2>다음 단계로 이어지는 배움</h2><p>중학생 · 고등학생 교육</p><i class="mini-ui" aria-hidden="true"></i></article>
+        <article id="outro-curriculum" class="edu-card curriculum"><div class="banner-copy"><span class="eyeline"><span>CUSTOM PROGRAMS</span><span>교육 설계</span></span><h2>필요에 맞춰 구성</h2><p>대상과 목표를 고려한 커리큘럼</p></div><svg class="edu-icon list-icon" viewBox="0 0 100 100" aria-hidden="true"><rect class="wash" x="18" y="15" width="64" height="72" rx="8"/><path class="line" d="M34 35h35M34 50h35M34 65h24"/><circle class="accent-fill" cx="26" cy="35" r="3"/><circle class="accent-fill" cx="26" cy="50" r="3"/><circle class="accent-fill" cx="26" cy="65" r="3"/></svg></article>
+        <article id="outro-campus" class="edu-card campus"><div class="banner-copy"><span class="eyeline"><span>CAMPUS PROGRAMS</span><span>대학 · 기관</span></span><h2>현장에 맞는 프로그램</h2><p>대학과 기관을 위한 교육·워크숍</p></div><svg class="edu-icon campus-screen" viewBox="0 0 160 110" aria-hidden="true"><rect class="wash" x="8" y="10" width="144" height="77" rx="8"/><path class="line" d="M8 28h144M35 28v58M16 18h3m8 0h3m8 0h3M23 39h7m-7 9h7m-7 9h7m-7 9h7m-7 9h7M47 39h94m-94 9h75m-75 9h88"/><rect class="accent-fill" x="48" y="66" width="39" height="12" rx="3"/><path class="line" d="M71 87v8m-25 7h51m-41-7h31"/><circle class="accent-fill" cx="127" cy="70" r="10"/></svg></article>
+        <article class="edu-card workshops"><div class="banner-copy"><span class="eyeline"><span>WORKSHOPS</span><span>함께 배우기</span></span><h2>프로젝트로 배우기</h2><p>배움이 경험으로 이어져요</p><span class="pill">프로젝트형 교육 ↗</span></div><svg class="edu-icon bulb-icon" viewBox="0 0 100 100" aria-hidden="true"><path class="wash" d="M50 14c-17 0-28 12-28 27 0 11 7 18 15 26 3 3 4 7 4 11h18c0-4 1-8 4-11 8-8 15-15 15-26 0-15-11-27-28-27Z"/><path class="line" d="M50 15c-16 0-27 11-27 26 0 10 6 17 14 25 4 4 5 8 5 12h16c0-4 1-8 5-12 8-8 14-15 14-25 0-15-11-26-27-26ZM41 78h18m-16 7h14m-11 6h8M50 5v5m-34 8 6 5m62-5-6 5"/><path class="accent" d="m50 28 5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z"/></svg></article>
+        <article class="edu-card blue"><div class="banner-copy"><span class="eyeline"><span>LEARNING DESIGN</span><span>맞춤 설계</span></span><h2>맞춤형 커리큘럼</h2><p>배움의 목적과 환경에 맞춰 설계합니다</p></div><svg class="edu-icon route-icon" viewBox="0 0 100 100" aria-hidden="true"><path class="line" d="M20 75c18 0 13-28 31-28s13 28 30 28"/><circle class="accent-fill" cx="20" cy="75" r="8"/><circle class="accent-fill" cx="51" cy="47" r="8"/><circle class="accent-fill" cx="81" cy="75" r="8"/><path class="line" d="M34 23h33m-27 8h21"/></svg></article>
+        <article id="outro-organizations" class="edu-card organizations"><div class="banner-copy"><span class="eyeline"><span>ORGANIZATION LEARNING</span><span>기업 교육</span></span><h2>팀과 조직의 성장</h2><p>기업과 기관을 위한 교육 프로그램</p></div><svg class="edu-icon people-icon" viewBox="0 0 100 100" aria-hidden="true"><circle class="wash" cx="50" cy="30" r="13"/><circle class="wash" cx="23" cy="39" r="10"/><circle class="wash" cx="77" cy="39" r="10"/><path class="line" d="M26 81c0-17 9-28 24-28s24 11 24 28M6 79c0-13 6-21 17-21 5 0 9 2 12 5M94 79c0-13-6-21-17-21-5 0-9 2-12 5"/><path class="accent" d="M45 30h10m-5-5v10"/></svg></article>
+        <img class="outro-person" src="assets/img/education-journey-educator.jpg" alt="책을 든 교육자 일러스트">
+        <div class="outro-foot">BEEHIVE · LEARN, GROW, GO FURTHER</div>
+      </div>
+    </section>
+  </div>
+  <main class="home-content">
+    <section class="about-section content-wrap" id="about">
+      <div class="section-kicker"><span>ABOUT BEEHIVE</span><i></i><span>함께 키우는 배움의 가능성</span></div>
+      <div class="about-grid"><h2>배움이 한 사람의<br><em>다음 가능성</em>이 되도록</h2><div class="about-copy"><p>비하이브는 학습자의 호기심과 현장의 필요에서 출발해, 배움이 실제 경험과 성장으로 이어지는 교육을 함께 설계합니다.</p><a class="text-link" href="#curriculum">비하이브의 교육 방식 <span>↗</span></a></div></div>
+      <div class="principle-row"><div><b>01</b><span>가능성을 발견하고</span></div><div><b>02</b><span>목표에 맞게 설계하고</span></div><div><b>03</b><span>함께 성장합니다</span></div></div>
+    </section>
+    <section class="program-section" id="programs"><div class="content-wrap">
+      <div class="section-heading"><div><div class="section-kicker"><span>LEARNING PROGRAMS</span></div><h2>배움이 필요한 곳마다,<br>알맞은 여정을 만듭니다</h2></div><p>학습자의 나이와 환경, 교육의 목표에 따라<br>필요한 프로그램을 찾아보세요.</p></div>
+      <div class="program-grid">
+        <article class="program-card program-student" id="students"><div class="program-top"><span>FOR STUDENTS</span><span class="program-mark">✳</span></div><h3>초등 · 중등 · 고등</h3><p>호기심을 발견하고, 배운 것을 직접 경험하며 다음 가능성을 넓히는 학생 교육.</p><a href="#contact">학생 교육 살펴보기 <span>↗</span></a><div class="program-doodle doodle-student" aria-hidden="true">✳</div></article>
+        <article class="program-card program-campus" id="campus"><div class="program-top"><span>FOR CAMPUS & COMMUNITY</span><span class="program-mark">⌁</span></div><h3>대학 · 기관</h3><p>참여자와 현장의 목표에 맞춰 구성하는 진로·역량 교육과 워크숍.</p><a href="#contact">대학·기관 교육 살펴보기 <span>↗</span></a><div class="program-doodle doodle-campus" aria-hidden="true">▱</div></article>
+        <article class="program-card program-org" id="organizations"><div class="program-top"><span>FOR TEAMS</span><span class="program-mark">✳</span></div><h3>기업 · 조직</h3><p>팀의 과제와 구성원의 필요를 살펴 함께 배우고 적용하는 조직 교육.</p><a href="#contact">기업·조직 교육 살펴보기 <span>↗</span></a><div class="program-doodle doodle-org" aria-hidden="true">＋</div></article>
+      </div>
+    </div></section>
+    <section class="curriculum-section" id="curriculum"><div class="content-wrap curriculum-layout"><div><div class="section-kicker"><span>CURRICULUM</span><i></i><span>목표에 맞는 교육 설계</span></div><h2>정해진 틀보다,<br><em>필요한 배움</em>을 먼저 봅니다</h2><p class="curriculum-lead">누구와 무엇을 위해 배우는지 살펴보고, 목적에 맞는 과정으로 연결합니다.</p><a class="text-link" href="#contact">교육 설계 상담하기 <span>↗</span></a></div><div class="steps-list"><article><span>01</span><div><h3>대상과 환경을 듣고</h3><p>학습자와 현장의 상황, 원하는 변화를 살펴봅니다.</p></div><b>↗</b></article><article><span>02</span><div><h3>목표에 맞춰 구성하고</h3><p>주제와 활동, 진행 방식을 교육 목적에 맞게 정리합니다.</p></div><b>↗</b></article><article><span>03</span><div><h3>경험과 실천으로 잇고</h3><p>배운 내용을 직접 해보고 서로 나누는 과정을 만듭니다.</p></div><b>↗</b></article><article><span>04</span><div><h3>다음 성장으로 연결합니다</h3><p>교육 이후에도 배움이 이어질 수 있도록 돌아봅니다.</p></div><b>↗</b></article></div></div></section>
+    <section class="stories-section" id="stories"><div class="content-wrap"><div class="section-kicker"><span>WAYS TO LEARN</span><i></i><span>교육 프로그램 예시</span></div><div class="stories-heading"><h2>배움은 다양한 모습으로<br>이어질 수 있어요</h2><p>아래 주제는 교육 방향을 보여주는 예시입니다.<br>구체적인 과정은 대상과 목적에 맞춰 함께 정합니다.</p></div><div class="story-strip"><article><span>EXPLORE</span><h3>진로와 가능성<br>탐색하기</h3><p>관심을 발견하고 새로운 분야를 경험하는 배움</p><b>↗</b></article><article><span>MAKE</span><h3>프로젝트로<br>직접 만들어보기</h3><p>배운 지식이 경험으로 이어지는 참여형 과정</p><b>↗</b></article><article><span>GROW</span><h3>함께 배우며<br>성장하기</h3><p>대화와 협업으로 개인과 팀의 가능성 넓히기</p><b>↗</b></article></div></div></section>
+    <section class="contact-section" id="contact"><div class="contact-orbit" aria-hidden="true">B</div><div class="content-wrap contact-inner"><div><div class="section-kicker"><span>LET'S LEARN TOGETHER</span></div><h2>다음 배움의 여정,<br>함께 시작해요</h2><p>교육 대상과 목표를 알려주시면<br>비하이브가 함께 방향을 살펴보겠습니다.</p></div><a class="contact-button" href="#programs">교육 프로그램 살펴보기 <span>↗</span></a></div></section>
+    <footer class="site-footer"><div class="content-wrap"><a class="footer-brand" href="#global-top">BEEHIVE<span>배움의 가능성을 함께 키웁니다</span></a><div class="footer-links"><a href="#about">비하이브 소개</a><a href="#programs">교육 프로그램</a><a href="#curriculum">커리큘럼</a><a href="#stories">교육 사례</a></div><small>© BEEHIVE · LEARN, GROW, GO FURTHER</small></div></footer>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+<script>
+(()=>{
+gsap.registerPlugin(MotionPathPlugin);
+const NS='http://www.w3.org/2000/svg';
+const WW=1600, WH=800;
+const INK='#33302c';
+
+/* ---------------- math helpers ---------------- */
+const clamp=(x,a,b)=>x<a?a:x>b?b:x;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const sstep=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+const r2=n=>Math.round(n*100)/100;
+const P=p=>r2(p[0])+','+r2(p[1]);
+function rnd(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hex(c){if(c[0]!=='#')return c.match(/[\d.]+/g).slice(0,3).map(Number);const n=parseInt(c.slice(1),16);return[n>>16&255,n>>8&255,n&255]}
+function mix(a,b,t){const A=hex(a),B=hex(b);return'rgb('+A.map((v,i)=>Math.round(lerp(v,B[i],t))).join(',')+')'}
+function mixRGB(a,b,t){return mix(a,b,t)}
+function darken(c,t){return mix(c,'#2a2622',t)}
+function spline(p,closed=false,k=1){
+  const n=p.length;if(n<2)return'';
+  const g=i=>closed?p[((i%n)+n)%n]:p[clamp(i,0,n-1)];
+  let d='M'+P(p[0]);const m=closed?n:n-1;
+  for(let i=0;i<m;i++){const p0=g(i-1),p1=g(i),p2=g(i+1),p3=g(i+2);
+    d+='C'+P([p1[0]+(p2[0]-p0[0])*k/6,p1[1]+(p2[1]-p0[1])*k/6])+' '+P([p2[0]-(p3[0]-p1[0])*k/6,p2[1]-(p3[1]-p1[1])*k/6])+' '+P(p2);}
+  return closed?d+'Z':d;
+}
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1]], add=(a,b)=>[a[0]+b[0],a[1]+b[1]], mul=(a,s)=>[a[0]*s,a[1]*s];
+const len=a=>Math.hypot(a[0],a[1]);
+const norm=a=>{const l=len(a)||1;return[a[0]/l,a[1]/l]};
+const rot=(v,a)=>[v[0]*Math.cos(a)-v[1]*Math.sin(a),v[0]*Math.sin(a)+v[1]*Math.cos(a)];
+const lp=(a,b,t)=>[lerp(a[0],b[0],t),lerp(a[1],b[1],t)];
+/* tapered organic limb outline through a polyline */
+function limb(pts,ws,capE=0.55,capS=0.55){
+  const n=pts.length,L=[],R=[];
+  for(let i=0;i<n;i++){
+    const t=norm(i===0?sub(pts[1],pts[0]):i===n-1?sub(pts[i],pts[i-1]):sub(pts[i+1],pts[i-1]));
+    const nn=[-t[1],t[0]],h=ws[i]/2;
+    L.push(add(pts[i],mul(nn,h)));R.push(sub(pts[i],mul(nn,h)));
+  }
+  const te=norm(sub(pts[n-1],pts[n-2])),ts=norm(sub(pts[0],pts[1]));
+  const eT=add(pts[n-1],mul(te,ws[n-1]*capE)),sT=add(pts[0],mul(ts,ws[0]*capS));
+  return spline([...L,eT,...R.reverse(),sT],true);
+}
+/* cut a polyline at a fraction of its length; returns pts & widths */
+function cutPoly(pts,ws,f0,f1){
+  const segs=[];let tot=0;for(let i=1;i<pts.length;i++){const l=len(sub(pts[i],pts[i-1]));segs.push(l);tot+=l}
+  const at=f=>{let d=f*tot;for(let i=0;i<segs.length;i++){if(d<=segs[i]||i===segs.length-1){const t=segs[i]?clamp(d/segs[i],0,1):0;return{p:lp(pts[i],pts[i+1],t),w:lerp(ws[i],ws[i+1],t),i}}d-=segs[i]}};
+  const a=at(f0),b=at(f1);const P2=[a.p],W2=[a.w];
+  let acc=0;for(let i=0;i<segs.length;i++){acc+=segs[i];const f=acc/tot;if(f>f0+1e-4&&f<f1-1e-4){P2.push(pts[i+1]);W2.push(ws[i+1])}}
+  P2.push(b.p);W2.push(b.w);
+  if(P2.length===2){P2.splice(1,0,lp(P2[0],P2[1],.5));W2.splice(1,0,(W2[0]+W2[1])/2)}
+  return{p:P2,w:W2};
+}
+/* path templates: parse, morph, transform (absolute M/L/C/Z only) */
+function parse(d){return d.match(/[MLCZ]|-?\d*\.?\d+/g).map(t=>/[MLCZ]/.test(t)?t:parseFloat(t))}
+function morphT(A,B,t,m){
+  let out='',buf=[];
+  for(let i=0;i<A.length;i++){
+    const a=A[i];
+    if(typeof a==='string'){out+=a;continue}
+    buf.push(lerp(a,B[i],t));
+    if(buf.length===2){const x=buf[0],y=buf[1];buf=[];
+      out+=r2(m[0]*x+m[2]*y+m[4])+','+r2(m[1]*x+m[3]*y+m[5])+' '}
+  }
+  return out;
+}
+const mat=(a,b,c,d,e,f)=>[a,b,c,d,e,f];
+function mm(A,B){return[A[0]*B[0]+A[2]*B[1],A[1]*B[0]+A[3]*B[1],A[0]*B[2]+A[2]*B[3],A[1]*B[2]+A[3]*B[3],A[0]*B[4]+A[2]*B[5]+A[4],A[1]*B[4]+A[3]*B[5]+A[5]]}
+const mT=(x,y)=>[1,0,0,1,x,y], mS=(s,t=s)=>[s,0,0,t,0,0], mR=a=>[Math.cos(a),Math.sin(a),-Math.sin(a),Math.cos(a),0,0];
+const circ=(x,y,r)=>`M${x-r},${y} C${x-r},${y-.55*r} ${x-.55*r},${y-r} ${x},${y-r} C${x+.55*r},${y-r} ${x+r},${y-.55*r} ${x+r},${y} C${x+r},${y+.55*r} ${x+.55*r},${y+r} ${x},${y+r} C${x-.55*r},${y+r} ${x-r},${y+.55*r} ${x-r},${y} Z`;
+const pair=(a,b)=>[parse(a),parse(b)];
+
+/* ---------------- head art (profile, facing right; child → adult) ---------------- */
+const HEAD={
+  skin:pair("M6,-44 C26,-42 40,-28 42,-10 C43,-4 41,0 41,2 C44,7 49,11 49,15 C49,19 45,20 42,20 C43,23 44,26 42,28 C41,30 39,30 39,31 C41,33 41,36 39,38 C38,44 34,47 27,48 C18,49 10,46 4,40 C-4,34 -14,28 -20,22 C-36,10 -40,-16 -30,-34 C-22,-46 -8,-48 6,-44 Z",
+            "M8,-44 C26,-44 38,-32 40,-14 C41,-6 42,-2 42,1 C45,7 52,14 52,19 C52,23 47,24 44,23 C45,27 45,30 43,32 C42,34 40,34 40,35 C42,37 42,41 40,44 C39,51 35,56 26,57 C17,58 8,54 2,48 C-6,40 -14,32 -20,26 C-34,12 -38,-14 -30,-32 C-22,-44 -8,-48 8,-44 Z"),
+  hair:pair("M44,-20 C40,-18 34,-20 30,-16 C30,-22 26,-24 22,-22 C20,-26 14,-28 10,-26 C2,-28 -10,-24 -18,-16 C-20,-8 -18,2 -16,8 C-22,10 -30,12 -36,14 C-40,4 -44,-12 -40,-26 C-36,-44 -20,-56 0,-56 C20,-56 36,-48 42,-36 C46,-30 46,-24 44,-20 Z",
+            "M42,-22 C38,-22 32,-24 28,-22 C28,-26 24,-28 20,-27 C18,-30 12,-32 8,-30 C0,-31 -10,-26 -16,-18 C-18,-10 -18,-2 -16,4 C-20,4 -26,6 -32,6 C-36,-2 -40,-14 -38,-26 C-34,-44 -18,-54 2,-54 C22,-54 36,-46 42,-36 C45,-32 45,-26 42,-22 Z"),
+  tuft:pair("M-6,-55 C-9,-64 -2,-71 5,-68 C0,-66 -2,-62 -1,-56","M-6,-53 C-7,-59 -3,-63 1,-62 C-2,-60 -3,-57 -2,-54"),
+  strands:pair("M10,-50 C2,-44 -6,-36 -10,-26 M24,-48 C18,-41 14,-35 12,-29 M-20,-44 C-28,-34 -32,-22 -30,-10 M36,-38 C34,-32 32,-28 28,-24",
+               "M12,-49 C4,-44 -4,-36 -8,-27 M26,-47 C20,-41 16,-36 14,-31 M-20,-43 C-27,-34 -31,-22 -29,-10 M36,-39 C34,-34 32,-30 28,-27"),
+  hpart:pair("M30,-40 C20,-47 6,-51 -6,-51","M30,-42 C20,-48 6,-51 -6,-51"),
+  ear:pair("M-3,3 C-7,-5 -15,-5 -16,3 C-17,11 -11,16 -4,13 C-2,11 -1,7 -3,3 Z","M-3,1 C-7,-7 -15,-7 -16,1 C-17,10 -11,16 -4,13 C-2,10 -1,5 -3,1 Z"),
+  earIn:pair("M-7,2 C-11,1 -12,7 -8,9","M-7,0 C-11,-1 -12,6 -8,8"),
+  eye:pair("M27.5,4 C28.5,1 32.5,0.5 34,3.5 C33,6.5 28.5,6.8 27.5,4 Z","M28.5,3 C29.5,0.8 33.5,0.2 35,2.4 C34,4.6 29.5,5 28.5,3 Z"),
+  eyeHi:pair(circ(31.6,2.9,.75),circ(32.4,1.9,.6)),
+  lid:pair("M26,1 C28.5,-2.2 33.5,-2.4 35.8,1 C36.6,0.4 37.2,0 37.6,-0.6","M27,0 C29.5,-2.4 34.5,-2.6 36.6,0 C37.3,-0.5 37.8,-0.9 38.2,-1.4"),
+  brow:pair("M25,-8 C28.5,-11.5 34,-12 38.5,-9","M25.5,-7.5 C29,-10.5 35,-11 40,-8"),
+  nostril:pair("M41.5,16.5 C43,18 44.5,18 45.5,16.8","M44.5,20 C46,21.5 47.8,21.5 49,20.2"),
+  mouth:pair("M36.5,31.2 C38,32.6 40,32.4 41.2,30.6","M37.2,34.6 C38.6,35.8 40.6,35.6 41.8,34.2"),
+  blush:pair("M21,15 C22,11 31,10.5 33,14 C34,18 23,19.5 21,15 Z","M22,17 C23,14 30,13.5 32,16 C33,19 24,20 22,17 Z"),
+  freck:pair(circ(33,9.5,.75)+circ(36.2,11.2,.7)+circ(32.4,12.6,.65),circ(35,8.5,.65)+circ(38.4,10.2,.6)+circ(34.6,11.6,.55)),
+  mole:pair(circ(19.5,22,.9),circ(20,26,.85)),
+  jaw:pair("M4,40 C-2,36 -8,32 -12,28","M2,48 C-4,43 -10,37 -14,32"),
+};
+/* shoes in foot units (ankle origin, ground at y=.30) */
+const SHOE={
+  body:pair("M-0.30,-0.10 C-0.36,0.05 -0.36,0.22 -0.30,0.30 L0.62,0.30 C0.80,0.30 0.84,0.18 0.76,0.10 C0.62,0.0 0.42,-0.06 0.24,-0.10 C0.18,-0.22 0.08,-0.28 -0.04,-0.26 C-0.16,-0.25 -0.26,-0.2 -0.30,-0.10 Z",
+            "M-0.28,-0.08 C-0.33,0.06 -0.33,0.2 -0.28,0.28 L0.66,0.28 C0.86,0.28 0.9,0.2 0.82,0.13 C0.66,0.04 0.44,-0.03 0.26,-0.07 C0.2,-0.18 0.1,-0.22 -0.02,-0.21 C-0.14,-0.2 -0.24,-0.16 -0.28,-0.08 Z"),
+  sole:pair("M-0.34,0.19 C0,0.2 0.4,0.2 0.8,0.17","M-0.31,0.235 C0,0.24 0.4,0.24 0.86,0.21"),
+  lace:pair("M0.10,-0.10 L0.17,-0.03 M0.2,-0.08 L0.27,-0.01 M0.3,-0.06 L0.37,0.01","M0.12,-0.1 L0.14,-0.08 M0.2,-0.08 L0.22,-0.06 M0.28,-0.06 L0.3,-0.04"),
+};
+/* hand: mitten with thumb, x along forearm, y toward front */
+const HAND=pair("M0,-0.24 C0.25,-0.32 0.5,-0.34 0.7,-0.3 C0.82,-0.42 0.98,-0.42 0.98,-0.3 C0.98,-0.2 0.9,-0.14 0.88,-0.1 C1.02,-0.02 1.04,0.14 0.92,0.2 C0.7,0.3 0.4,0.3 0.1,0.24 C0.0,0.1 -0.02,-0.1 0,-0.24 Z",
+                "M0,-0.22 C0.25,-0.3 0.5,-0.32 0.7,-0.28 C0.82,-0.4 0.98,-0.4 0.98,-0.28 C0.98,-0.2 0.92,-0.14 0.9,-0.1 C1.04,-0.02 1.06,0.12 0.94,0.18 C0.72,0.27 0.42,0.27 0.1,0.22 C0.0,0.08 -0.02,-0.1 0,-0.22 Z");
+const FINGER=pair("M0.62,0.06 C0.72,0.06 0.8,0.05 0.86,0.02 M0.6,-0.08 C0.7,-0.08 0.78,-0.09 0.84,-0.12","M0.62,0.05 C0.72,0.05 0.8,0.04 0.88,0.01 M0.6,-0.08 C0.7,-0.08 0.8,-0.09 0.86,-0.12");
+
+/* ---------------- stage tables (0 초 · 1 중 · 2 고 · 3 대 · 4 직) ---------------- */
+const ST={
+  H:[118,146,160,166,170], kHead:[4.45,5.4,6.15,6.6,6.85], legR:[.455,.47,.48,.485,.49], neckR:[.022,.03,.036,.04,.042],
+  depR:[.17,.152,.152,.158,.162], upR:[.17,.178,.183,.185,.185], foR:[.14,.145,.148,.15,.15], handR:[.088,.09,.09,.09,.09],
+  thighW:[.096,.086,.086,.09,.092], shinW:[.066,.06,.06,.062,.063], uaW:[.06,.056,.058,.062,.062], faW:[.046,.044,.045,.047,.047],
+  footR:[.15,.152,.152,.152,.152], neckW:[.055,.058,.062,.066,.068], belly:[.07,.02,0,0,0],
+  faceT:[0,.45,.72,.9,1], hairT:[0,.3,.55,.75,1],
+  sleeve:[.32,.3,1,1,1], sleevePad:[3.2,2.6,3.6,4.4,3.6], pant:[.4,1,1,1,1], pantPad:[3.6,3,3,3.6,3],
+  hem:[-.08,-.06,-.27,-.14,-.29], pad:[.06,.03,.1,.13,.1], dress:[0,0,0,0,1], bp:[1,.88,.8,.8,.8],
+  top:['#f6f0e2','#f8f7f2','#3f4c68','#8d9479','#4a4e57'],
+  pants:['#c9b48c','#35405a','#2e374d','#7891ad','#3f434b'],
+  shoe:['#efebe1','#efebe1','#e7e1d3','#dbd5c7','#3b302a'],
+  tie:['#7d3b3f','#7d3b3f','#7d3b3f','#c9962e','#c9962e'],
+};
+const SKIN='#f0d3bd', HAIR='#4a3a31', YEL='#e1ad37', WHITE='#fbfaf6', STRIPE='#557396';
+function stage(a){
+  const i=Math.min(3,Math.floor(a)),t=a-i,w=[0,0,0,0,0];w[i]=1-t;w[i+1]=t;
+  const v=k=>lerp(ST[k][i],ST[k][i+1],t), c=k=>mix(ST[k][i],ST[k][i+1],t);
+  return{a,w,v,c,i,t};
+}
+
+/* ---------------- SVG element registry ---------------- */
+const $=id=>document.getElementById(id);
+const svg=$('svg'), world=$('world'), charG=$('char'), skelG=$('skel');
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+const PARTS=[]; // per intro part: {draw, fill}
+for(let i=0;i<9;i++)PARTS.push({draw:0,fill:0});
+const C={};
+/* kind: 'fi' fill+ink, 'i' ink only, 'f' fill only. sw: stroke width */
+function mk(key,part,kind='fi',sw=1.35,extra={}){
+  const g=el('g',{},charG);const o={g,part,kind,sw,lead:null};
+  if(kind!=='i'){o.wash=el('path',{class:'wash',transform:'translate(.7,-.5)'},g)}
+  if(kind!=='f'){o.ink=el('path',{fill:'none',stroke:INK,'stroke-width':sw,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':'1 1'},g)}
+  if(extra.clip&&o.wash)o.wash.setAttribute('clip-path','url(#shirtClip)');
+  if(extra.inkFill&&o.ink){o.ink.setAttribute('fill',INK)}
+  C[key]=o;return o;
+}
+/* build character layers back → front */
+['f','n'].forEach(s=>{
+  if(s==='f'){mk('fArm',5);mk('fSleeve',5);mk('fCuff',5,'fi',1);mk('fHand',5);}
+});
+['f','n'].forEach(s=>{
+  mk(s+'Leg',6);mk(s+'Sock',7,'fi',1.1);mk(s+'Shoe',7);mk(s+'Sole',7,'i',1);mk(s+'Lace',7,'i',.9);
+  mk(s+'Pants',6);mk(s+'Hem',6,'i',1);mk(s+'Knee',6,'i',.9);
+});
+mk('seat',6);mk('crotch',6,'i',.9);
+mk('bpBody',8);mk('bpPocket',8);mk('bpFlap',8,'i',1.05);mk('bpHandle',8,'i',1.2);mk('bpTag',8,'fi',1);
+mk('neck',3);
+mk('shirt',3);mk('stripes',3,'f',0,{clip:1});mk('shade',3,'f');mk('crew',3,'i',1.1);mk('folds',3,'i',.9);
+mk('lapel',3,'i',1.1);mk('jFront',3,'i',1.05);mk('buttons',3,'fi',.8);mk('pockets',3,'i',1);mk('kanga',3,'i',1);mk('hemRib',3,'i',.9);
+mk('hood',3);mk('hoodIn',3,'i',.9);mk('strings',3,'i',1);
+mk('collar',3);mk('tie',3);mk('pPencil',3,'fi',.9);
+mk('skin',0,'fi',1.45);mk('blush',2,'f');mk('freck',2,'f');mk('mole',2,'f');mk('jaw',0,'i',.8);
+mk('eye',2,'f');mk('eyeHi',2,'f');mk('lid',2,'i',1.25);mk('brow',2,'i',1.9);mk('nostril',2,'i',1);mk('mouth',2,'i',1.15);
+mk('hair',1,'fi',1.45);mk('strands',1,'i',.9);mk('hpart',1,'i',.9);mk('tuft',1,'i',1.5);
+mk('ear',0,'fi',1.2);mk('earIn',0,'i',.9);
+mk('strap',8);mk('mStrap',8);mk('mBag',8);mk('mFlap',8);mk('mBuckle',8,'fi',.9);
+mk('nSleeveBack',4,'i',1);
+mk('nArm',4);mk('nSleeve',4);mk('nCuff',4,'fi',1);mk('nElbow',4,'i',.9);mk('nHand',4);mk('nFinger',4,'i',.8);
+mk('bcBody',8);mk('bcHandle',8,'i',1.4);mk('bcDetail',8,'i',.9);
+['fArm','fSleeve','fCuff','fHand'].forEach(k=>{});
+/* intro lead elements for the pencil tip */
+const LEAD=['skin','hair','lid','shirt','nSleeve','fSleeve','nPants','nShoe','bpBody'];
+const skel={lines:el('path',{fill:'none',stroke:'#d2452f','stroke-width':1.6,'stroke-linecap':'round'},skelG),dots:el('path',{fill:'#d2452f'},skelG)};
+skelG.style.display='none';
+
+/* ---------------- road path ---------------- */
+const ROAD=[[30,712],[150,706],[280,694],[400,662],[500,618],[600,596],[700,604],[800,634],[900,640],[1000,606],[1090,548],[1180,498],[1280,470],[1380,452],[1480,436]];
+const roadD=spline(ROAD);
+const roadLayer=$('roadLayer');
+const roadEdge=el('path',{d:roadD,fill:'none',stroke:INK,'stroke-width':38,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':'1 1',opacity:.85},roadLayer);
+const roadFill=el('path',{d:roadD,fill:'none',stroke:'#e8dfcb','stroke-width':35.4,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':'1 1'},roadLayer);
+const roadTex=el('path',{d:roadD,fill:'none',stroke:'#d6cbb2','stroke-width':1.2,'stroke-dasharray':'0.004 0.013',pathLength:1,opacity:.9,transform:'translate(0,6)'},roadLayer);
+const roadTex2=el('path',{d:roadD,fill:'none',stroke:'#d6cbb2','stroke-width':1.1,'stroke-dasharray':'0.003 0.017',pathLength:1,opacity:.8,transform:'translate(0,-7)'},roadLayer);
+const roadGuide=el('path',{d:roadD,fill:'none',stroke:'none',id:'roadGuide'},roadLayer);
+const RL=roadGuide.getTotalLength();
+const LUTN=3000, LX=new Float32Array(LUTN+1), LY=new Float32Array(LUTN+1);
+for(let i=0;i<=LUTN;i++){const p=roadGuide.getPointAtLength(i/LUTN*RL);LX[i]=p.x;LY[i]=p.y}
+function at(s){s=clamp(s,0,RL);const f=s/RL*LUTN,i=Math.min(LUTN-1,Math.floor(f)),t=f-i;return[lerp(LX[i],LX[i+1],t),lerp(LY[i],LY[i+1],t)]}
+function tang(s){return norm(sub(at(s+4),at(s-4)))}
+function nearest(x,y){let b=0,bd=1e9;for(let i=0;i<=LUTN;i++){const d=(LX[i]-x)**2+(LY[i]-y)**2;if(d<bd){bd=d;b=i}}return b/LUTN*RL}
+
+/* ---------------- landmarks ---------------- */
+const R=rnd(11);
+function hatch(x0,y0,x1,y1,step,slant=.6){let d='';for(let x=x0;x<x1+ (y1-y0)*slant;x+=step){let ax=x,ay=y1,bx=x-(y1-y0)*slant,by=y0;
+  // clip to rect
+  if(ax>x1){ay=y1-(ax-x1)/slant;ax=x1} if(bx<x0){by=y0+(x0-bx)/slant;bx=x0}
+  if(ay>by)d+=`M${r2(ax+(R()-.5))},${r2(ay)} L${r2(bx+(R()-.5))},${r2(by)} `}return d}
+function rectD(x,y,w,h){return`M${x},${y} L${x+w},${y} L${x+w},${y+h} L${x},${y+h} Z`}
+function winGrid(xs,ys,w,h,cross=true){let d='';for(const y of ys)for(const x of xs){d+=rectD(x,y,w,h)+' ';if(cross)d+=`M${x+w/2},${y} L${x+w/2},${y+h} `}return d}
+function winFill(xs,ys,w,h){let d='';for(const y of ys)for(const x of xs)d+=rectD(x+1,y+1,w-2,h-2)+' ';return d}
+function treeD(cx,by,r,seed){const q=rnd(seed),pts=[];const n=11;for(let i=0;i<n;i++){const a=i/n*Math.PI*2-Math.PI/2;const rr=r*(0.8+q()*0.32);pts.push([cx+Math.cos(a)*rr*1.05,by-r*1.9+Math.sin(a)*rr])}
+  return{crown:spline(pts,true),trunk:`M${cx-2},${by} C${cx-1},${by-r*.6} ${cx-1},${by-r*.9} ${cx},${by-r*1.15} M${cx+2.5},${by} C${cx+2},${by-r*.5} ${cx+1.5},${by-r*.8} ${cx+.5},${by-r*1.1} M${cx},${by-r*1.05} L${cx+r*.35},${by-r*1.45}`,
+  scrib:`M${cx-r*.5},${by-r*1.7} C${cx-r*.2},${by-r*2.1} ${cx+r*.2},${by-r*1.5} ${cx+r*.55},${by-r*1.9} M${cx-r*.3},${by-r*2.3} C${cx},${by-r*2.5} ${cx+r*.3},${by-r*2.2} ${cx+r*.4},${by-r*2.5}`}}
+
+const B=[
+ { name:'초등학교', at:[250,698], dx:-20, lab:[0,-150],
+   ink:[ 'M-92,0 L-92,-78 L92,-78 L92,0',
+         'M-102,-78 L-62,-104 L62,-104 L102,-78 M-26,-104 L0,-128 L26,-104',
+         circ(0,-110,8)+' M0,-110 L0,-115.5 M0,-110 L4.2,-108',
+         'M-14,0 L-14,-36 L14,-36 L14,0 M0,0 L0,-36 M-20,-38 L20,-38',
+         winGrid([-80,-56,38,62],[-66],18,16)+winGrid([-80,-56,38,62],[-36],18,16),
+         'M120,0 L120,-134 M120,-134 C130,-138 140,-129 152,-133 L152,-116 C140,-112 130,-121 120,-117',
+         hatch(62,-78,92,0,6,.7)],
+   wash:[{d:'M-92,0 L-92,-78 L92,-78 L92,0 Z',c:'#eadfc9'},{d:'M-102,-78 L-62,-104 L62,-104 L102,-78 Z M-26,-104 L0,-128 L26,-104 Z',c:'#c9876b'}],
+   lit:[{d:winFill([-80,-56,38,62],[-66,-36],18,16),c:'#f4d58a'},{d:'M120,-134 C130,-138 140,-129 152,-133 L152,-116 C140,-112 130,-121 120,-117 Z',c:YEL}],
+   trees:[[-130,16,3],[170,13,4]] },
+ { name:'중학교', at:[590,598], dx:0, lab:[0,-182],
+   ink:[ 'M-70,0 L-70,-150 L70,-150 L70,0',
+         'M-76,-150 L76,-150 L76,-160 L-76,-160 Z',
+         winGrid([-58,-12,34],[-136,-102],24,20),
+         winGrid([-58,34],[-68],24,20),
+         'M-30,-34 L30,-34 L34,-42 L-34,-42 Z M-17,0 L-17,-32 L17,-32 L17,0 M0,0 L0,-32',
+         'M-22,-150 L-22,-168 L22,-168 L22,-150',
+         hatch(40,-150,70,0,6,.7)],
+   wash:[{d:'M-70,0 L-70,-150 L70,-150 L70,0 Z',c:'#dfe3e0'},{d:'M-76,-150 L76,-150 L76,-160 L-76,-160 Z',c:'#9aa7a5'}],
+   lit:[{d:winFill([-58,-12,34],[-136,-102],24,20)+winFill([-58,34],[-68],24,20),c:'#f4d58a'},{d:'M-22,-150 L-22,-168 L22,-168 L22,-150 Z',c:YEL}],
+   trees:[[-102,14,7],[98,12,8]] },
+ { name:'고등학교', at:[880,640], dx:0, lab:[0,-200],
+   ink:[ 'M-76,0 L-76,-112 L76,-112 L76,0',
+         'M-20,-112 L-20,-160 L20,-160 L20,-112 M-27,-160 L0,-186 L27,-160 Z',
+         circ(0,-138,9)+' M0,-138 L0,-144 M0,-138 L4.5,-135.5',
+         winGrid([-66,-42,26,50],[-94,-58],16,20),
+         'M-14,0 L-14,-26 C-14,-40 14,-40 14,-26 L14,0 M-22,0 L22,0 M-26,4 L26,4',
+         hatch(46,-112,76,0,6,.7)],
+   wash:[{d:'M-76,0 L-76,-112 L76,-112 L76,0 Z M-20,-112 L-20,-160 L20,-160 L20,-112 Z',c:'#e8dac8'},{d:'M-27,-160 L0,-186 L27,-160 Z',c:'#5d6982'}],
+   lit:[{d:winFill([-66,-42,26,50],[-94,-58],16,20),c:'#f4d58a'},{d:circ(0,-138,8),c:'#fbf5e3'}],
+   trees:[[-104,14,9],[100,12,10]] },
+ { name:'대학교', at:[1200,492], dx:0, lab:[0,-162],
+   ink:[ 'M-82,0 L82,0 M-76,-7 L76,-7 M-70,-14 L70,-14',
+         'M-54,-14 L-54,-94 M-44,-14 L-44,-94 M-22,-14 L-22,-94 M-12,-14 L-12,-94 M12,-14 L12,-94 M22,-14 L22,-94 M44,-14 L44,-94 M54,-14 L54,-94',
+         'M-72,-94 L72,-94 L72,-106 L-72,-106 Z M-78,-106 L0,-146 L78,-106 Z',
+         circ(0,-122,7),
+         'M-7,-14 L-7,-50 L7,-50 L7,-14',
+         hatch(-70,-90,-56,-14,5,.3)+hatch(56,-90,70,-14,5,.3)],
+   wash:[{d:'M-72,-14 L-72,-94 L72,-94 L72,-14 Z',c:'#eeeadf'},{d:'M-72,-94 L72,-94 L72,-106 L-72,-106 Z M-78,-106 L0,-146 L78,-106 Z',c:'#c9c3b2'}],
+   lit:[{d:circ(0,-122,6),c:YEL},{d:'M-6,-15 L-6,-49 L6,-49 L6,-15 Z',c:'#f4d58a'}],
+   trees:[[-112,15,11],[112,13,12],[-140,11,13]] },
+ { name:'직장', at:[1446,318], dx:46, lab:[-112,-150], end:true,
+   ink:[ 'M-58,0 L-58,-226 L58,-226 L58,0',
+         'M-44,-226 L-44,-242 L44,-242 L44,-226 M28,-242 L28,-268 M28,-268 L33,-268',
+         'M-38,-210 L-38,-44 M-18,-210 L-18,-44 M2,-210 L2,-44 M22,-210 L22,-44 M42,-210 L42,-44 '+[...Array(9)].map((_,i)=>`M-46,${-210+i*20} L48,${-210+i*20}`).join(' '),
+         'M-24,0 L-24,-32 L24,-32 L24,0 M0,0 L0,-32 M-32,-34 L32,-34',
+         hatch(-58,-226,-48,0,6,.25)],
+   wash:[{d:'M-58,0 L-58,-226 L58,-226 L58,0 Z',c:'#d4dbe0'},{d:'M-44,-226 L-44,-242 L44,-242 L44,-226 Z',c:'#9fa9b1'}],
+   lit:[{d:[[-38,-210],[2,-190],[22,-170],[-18,-150],[22,-130],[-38,-110],[2,-90],[-18,-70],[22,-50]].map(([x,y])=>rectD(x+1,y+1,18,18)).join(' '),c:'#f4d58a'}],
+   trees:[[-88,14,14]] },
+];
+const bldLayer=$('bldLayer'), bgLayer=$('bgLayer');
+B.forEach((b,k)=>{
+  b.s=nearest(b.at[0],b.at[1]);
+  const p=at(b.s);b.x=p[0]+b.dx;b.y=p[1]-23;
+  if(b.end){const e=at(RL);b.x=e[0]+52;b.y=e[1]-20}
+  b.g=el('g',{transform:`translate(${r2(b.x)},${r2(b.y)})`},bldLayer);
+  b.washG=el('g',{filter:'url(#wash)',opacity:0},b.g);
+  b.wash.forEach(w=>el('path',{d:w.d,fill:w.c,opacity:.95},b.washG));
+  b.litG=el('g',{filter:'url(#wash)',opacity:0},b.g);
+  b.lit.forEach(w=>el('path',{d:w.d,fill:w.c},b.litG));
+  const inkG=el('g',{filter:'url(#pencil)'},b.g);
+  b.inks=b.ink.map((d,i)=>el('path',{d,fill:'none',stroke:INK,'stroke-width':i===b.ink.length-1?0.8:1.5,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1},inkG));
+  b.trees.forEach(([dx,r,seed])=>{const t=treeD(dx,0,r,seed);
+    const tw=el('path',{d:t.crown,fill:'#b9c2a6',opacity:0,filter:'url(#wash)'},b.washG);
+    b.inks.push(el('path',{d:t.trunk+' '+t.crown,fill:'none',stroke:INK,'stroke-width':1.3,'stroke-linecap':'round',pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1},inkG));
+    tw.setAttribute('opacity',.9);
+  });
+  b.label=el('text',{x:b.lab[0],y:b.lab[1],'text-anchor':'middle','font-family':'Nanum Pen Script, cursive','font-size':34,fill:INK,opacity:0},b.g);
+  b.label.textContent=b.name;
+  b.under=el('path',{d:`M${b.lab[0]-34},${b.lab[1]+7} C${b.lab[0]-10},${b.lab[1]+11} ${b.lab[0]+14},${b.lab[1]+4} ${b.lab[0]+38},${b.lab[1]+8}`,fill:'none',stroke:YEL,'stroke-width':4,'stroke-linecap':'round',pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1},b.g);
+  b.st={sketch:0,wash:0,lit:0,label:0,under:0};
+});
+/* scenery: hills wash + loose trees + grass ticks */
+const hills=el('g',{filter:'url(#wash)',opacity:0},bgLayer);
+[[`M-900,4000 L-900,560 C-300,520 200,470 520,486 C820,500 1020,380 1360,330 C1700,295 2100,310 2500,300 L2500,4000 Z`,'#eceee4'],
+ [`M-900,4000 L-900,760 C-100,730 300,640 620,610 C900,600 1100,470 1480,420 C1800,390 2200,385 2500,380 L2500,4000 Z`,'#e7e9db'],
+ [`M-900,4000 L-900,770 C-200,770 400,750 800,742 C1200,734 1700,700 2500,690 L2500,4000 Z`,'#e2e5d4']].forEach(([d,c])=>el('path',{d,fill:c},hills));
+const scen=el('g',{filter:'url(#pencil)'},bgLayer);
+const scenWash=el('g',{filter:'url(#wash)'},bgLayer);
+const SCEN=[[60,650,12,31],[420,760,11,32],[720,700,13,33],[1060,700,10,34],[1380,560,12,35],[1010,540,9,36],[1560,520,10,37],[330,600,9,38]];
+const scenInks=[],scenWashes=[];
+SCEN.forEach(([x,y,r,s])=>{const t=treeD(x,y,r,s);scenWashes.push(el('path',{d:t.crown,fill:'#bcc5aa',opacity:0},scenWash));scenInks.push(el('path',{d:t.trunk+' '+t.crown,fill:'none',stroke:INK,'stroke-width':1.2,pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1},scen))});
+(()=>{const q=rnd(5);let d='';for(let i=0;i<70;i++){const s=q()*RL;const p=at(s),t=tang(s);const side=q()<.5?-1:1;const o=add(p,mul([-t[1],t[0]],side*(26+q()*30)));d+=`M${r2(o[0])},${r2(o[1])} l${r2(-2+q()*1.5)},${r2(-5-q()*4)} M${r2(o[0]+3)},${r2(o[1])} l${r2(1+q())},${r2(-4-q()*3)} `}
+  scenInks.push(el('path',{d,fill:'none',stroke:INK,'stroke-width':.9,'stroke-linecap':'round',opacity:.7,pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1},scen))})();
+
+/* ground shadow */
+const shadow=el('path',{fill:'#33302c',opacity:.13,filter:'url(#wash)'},$('shadowLayer'));
+
+/* ---------------- pencil ---------------- */
+const pen=el('g',{opacity:0},$('penLayer'));
+const penInner=el('g',{},pen);
+(()=>{const g=el('g',{transform:'rotate(-128)'},penInner);
+  // tip at origin, body along +x
+  el('path',{d:'M0,0 L18,-6.5 L18,6.5 Z',fill:'#e7c9a0',stroke:INK,'stroke-width':1.2,'stroke-linejoin':'round'},g);
+  el('path',{d:'M0,0 L6,-2.2 L6,2.2 Z',fill:INK},g);
+  el('path',{d:'M18,-7 L104,-7 L104,7 L18,7 Z',fill:YEL,stroke:INK,'stroke-width':1.2},g);
+  el('path',{d:'M18,-2.3 L104,-2.3 M18,2.3 L104,2.3',stroke:'#b9862a','stroke-width':1},g);
+  el('path',{d:'M104,-7.4 L116,-7.4 L116,7.4 L104,7.4 Z',fill:'#b9bcbf',stroke:INK,'stroke-width':1.2},g);
+  el('path',{d:'M108,-7.4 L108,7.4 M112,-7.4 L112,7.4',stroke:INK,'stroke-width':.8},g);
+  el('path',{d:'M116,-7.2 L126,-7.2 C130,-7.2 131,-4 131,0 C131,4 130,7.2 126,7.2 L116,7.2 Z',fill:'#e59b98',stroke:INK,'stroke-width':1.2},g);
+})();
+
+/* ---------------- walk planning (distance-driven, foot-pinned) ---------------- */
+const S0=B[0].s+24, SEND=RL-4;
+const FS=B.map(b=>b.s); FS[0]=S0; FS[4]=SEND;
+function ageAt(s){if(s<=FS[0])return 0;for(let k=0;k<4;k++){if(s<FS[k+1]){const g=FS[k+1]-FS[k];return k+sstep(FS[k]+.2*g,FS[k]+.78*g,s)}}return 4}
+const legLenA=a=>{const st=stage(a);return st.v('H')*st.v('legR')};
+const STEPK=0.82, CAD=1.98; // step length factor, steps per second
+const NG=4000, dsG=(SEND-S0)/NG;
+const PH=new Float64Array(NG+1), TT=new Float64Array(NG+1);
+let stepScale=1;
+function buildTables(){
+  let ph=0;const raw=new Float64Array(NG+1);
+  for(let i=1;i<=NG;i++){const s=S0+(i-.5)*dsG;ph+=dsG/(2*STEPK*legLenA(ageAt(s)));raw[i]=ph}
+  const target=Math.round(raw[NG]*2)/2; stepScale=raw[NG]/target;
+  for(let i=0;i<=NG;i++)PH[i]=.25+raw[i]/stepScale;
+  // time: speed = cadence * step, eased at both ends
+  let t=0;TT[0]=0;
+  const L0=STEPK*legLenA(0)*stepScale, L4=STEPK*legLenA(4)*stepScale;
+  for(let i=1;i<=NG;i++){const s=S0+(i-.5)*dsG;const L=STEPK*legLenA(ageAt(s))*stepScale;
+    const ramp=.42+.58*sstep(S0,S0+L0*1.6,s)*(1-sstep(SEND-L4*1.8,SEND,s));
+    t+=dsG/(CAD*L*ramp);TT[i]=t}
+}
+buildTables();
+const WALK_DUR=TT[NG];
+function sFromT(t){if(t<=0)return S0;if(t>=WALK_DUR)return SEND;let lo=0,hi=NG;while(hi-lo>1){const m=(lo+hi)>>1;if(TT[m]<t)lo=m;else hi=m}const f=(t-TT[lo])/(TT[hi]-TT[lo]);return S0+(lo+f)*dsG}
+function phaseAt(s){const f=clamp((s-S0)/dsG,0,NG),i=Math.min(NG-1,Math.floor(f));return lerp(PH[i],PH[i+1],f-i)}
+
+/* foot rotation through the cycle (stance 0–.5, swing .5–1) */
+function footRot(p){
+  if(p<.5){if(p<.07)return lerp(-.22,0,sstep(0,.07,p));if(p<.3)return 0;return .44*sstep(.3,.5,p)}
+  const q=(p-.5)/.5;return .44*(1-sstep(0,.45,q))-.22*sstep(.55,1,q);
+}
+function ik(p,t,l1,l2){const d0=sub(t,p);let d=len(d0);d=clamp(d,Math.abs(l1-l2)+.01,l1+l2-.01);const a=Math.atan2(d0[1],d0[0]);const c=clamp((l1*l1+d*d-l2*l2)/(2*l1*d),-1,1),b=Math.acos(c);
+  const k1=[p[0]+Math.cos(a-b)*l1,p[1]+Math.sin(a-b)*l1],k2=[p[0]+Math.cos(a+b)*l1,p[1]+Math.sin(a+b)*l1];return k1[0]>k2[0]?k1:k2}
+
+/* ---------------- character pose + draw ---------------- */
+const state={h1:0,h2:0,walkT:0,camIntro:1,camEnd:0,road:0,penOut:0,penEnd:0,scen:0,hills:0,outro:0};
+function setPart(o,d,fill,featW=1,introP){
+  const ip=PARTS[o.part];
+  const draw=Math.min(ip.draw,sstep(0,.6,featW)), fa=Math.min(ip.fill,sstep(.35,1,featW));
+  if(draw<=.001&&fa<=.001){if(o.g.style.display!=='none')o.g.style.display='none';return}
+  if(o.g.style.display==='none')o.g.style.display='';
+  if(o.wash){o.wash.setAttribute('d',d);if(fill)o.wash.setAttribute('fill',fill);o.wash.setAttribute('fill-opacity',fa)}
+  if(o.ink){o.ink.setAttribute('d',d);o.ink.setAttribute('stroke-dashoffset',r2(1-draw));
+    if(o.ink.getAttribute('fill')!=='none')o.ink.setAttribute('fill-opacity',fa)}
+}
+function hide(o){o.g.style.display='none'}
+
+let lastPose=null;
+function poseAndDraw(s){
+  const a=ageAt(s), st=stage(a), w=st.w, V=st.v;
+  const H=V('H'), headH=H/V('kHead'), legLen=H*V('legR'), F=H*V('footR'), ankleH=.3*F, bones=legLen-ankleH;
+  const thigh=bones*.5, shin=bones*.5;
+  const faceT=V('faceT'), hairT=V('hairT');
+  const k=headH/lerp(104,111,faceT), attachY=lerp(36,41,faceT), aboveAttach=lerp(92,95,faceT)*k;
+  const neckVis=H*V('neckR'), torsoLen=H-legLen-neckVis-aboveAttach, dep=H*V('depR');
+  const Lstep=STEPK*legLen*stepScale;
+  const amp=sstep(S0,S0+Lstep*.55,s)*(1-sstep(SEND-Lstep*.55,SEND,s));
+  const ph=phaseAt(s), pN=((ph%1)+1)%1, pF=(pN+.5)%1;
+  const hip=at(s), tg=tang(s);
+  const facing=tg[0]>=0?1:-1, sx=facing*Math.max(.08,Math.min(1,Math.abs(tg[0])/.32));
+  // feet
+  const liftH=.075*legLen;
+  function foot(p){
+    let off,lift=0;
+    if(p<.5){off=Lstep/2-Lstep*(p/.5)}else{const q=(p-.5)/.5;off=-Lstep/2+Lstep*(.5-.5*Math.cos(Math.PI*q));lift=Math.sin(Math.PI*q)*liftH*amp}
+    const G=at(s+off), t=tang(s+off);
+    const slope=clamp(Math.atan(t[1]/Math.max(.25,Math.abs(t[0]))),-.6,.6);
+    const r=footRot(p)*amp;
+    const Gl=[(G[0]-hip[0])*facing,G[1]];
+    const ax=rot([0,-ankleH],slope), heel=rot([-.28*F,0],slope), ball=rot([.5*F,0],slope);
+    let A;
+    if(r>0){const pv=add(Gl,ball);A=add(pv,rot(sub(add(Gl,ax),pv),r))}
+    else{const pv=add(Gl,heel);A=add(pv,rot(sub(add(Gl,ax),pv),r))}
+    A[1]-=lift;
+    return{A,r:r+slope,G:Gl};
+  }
+  const fN=foot(pN), fF=foot(pF);
+  // hip height: bob, then make sure both feet are reachable (no sliding)
+  const bob=.024*bones*amp*(1-Math.cos(4*Math.PI*pN))/2;
+  let hipY=hip[1]-ankleH-(bones*.972+bob);
+  const Bm=bones*.997;
+  [fN,fF].forEach(f=>{const dx=f.A[0];hipY=Math.max(hipY,f.A[1]-Math.sqrt(Math.max(0,Bm*Bm-dx*dx)))});
+  fN.A[1]-=hipY;fF.A[1]-=hipY;
+  const slopeHip=clamp(Math.atan(tg[1]/Math.max(.25,Math.abs(tg[0]))),-.5,.5);
+  const lean=.055+(-slopeHip)*.18+.012*amp*Math.sin(4*Math.PI*pN);
+  const T=(u,v)=>{const px=u*dep,py=-v*torsoLen;return[px*Math.cos(lean)-py*Math.sin(lean),px*Math.sin(lean)+py*Math.cos(lean)]};
+  // legs
+  const hipN=[.04*dep,0], hipF=[-.04*dep,-1];
+  const kN=ik(hipN,fN.A,thigh,shin), kF=ik(hipF,fF.A,thigh,shin);
+  // arms
+  const brief=w[4], uaL=H*V('upR'), faL=H*V('foR'), hL=H*V('handR');
+  const SN=T(-.04,.9), SF=T(-.14,.92);
+  const A0=.42*amp;
+  const thN=.03+lean*.6-A0*(1-.6*brief)*Math.cos(2*Math.PI*pN), thF=.03+lean*.6+A0*Math.cos(2*Math.PI*pN);
+  const dirA=t=>[Math.sin(t),Math.cos(t)];
+  function arm(S,th,bf){const swing=clamp(th/(A0+.01),-1,1);const e=(.16+.34*Math.max(0,swing)*amp)*(1-.6*bf)+.06;
+    const E=add(S,mul(dirA(th),uaL)), Wr=add(E,mul(dirA(th+e),faL)), hd=dirA(th+e+.1);return{S,E,W:Wr,hd,th,e}}
+  const aN=arm(SN,thN,brief), aF=arm(SF,thF,0);
+  // char transform
+  charG.setAttribute('transform',`translate(${r2(hip[0])},${r2(hipY)}) scale(${r2(sx)},1)`);
+  skelG.setAttribute('transform',`translate(${r2(hip[0])},${r2(hipY)}) scale(${r2(sx)},1)`);
+  // shadow
+  const gy=hip[1]+2;shadow.setAttribute('d',`M${r2(hip[0]-.2*H)},${r2(gy)} C${r2(hip[0]-.2*H)},${r2(gy-5)} ${r2(hip[0]+.2*H)},${r2(gy-5)} ${r2(hip[0]+.2*H)},${r2(gy)} C${r2(hip[0]+.2*H)},${r2(gy+5)} ${r2(hip[0]-.2*H)},${r2(gy+5)} ${r2(hip[0]-.2*H)},${r2(gy)} Z`);
+  shadow.setAttribute('opacity',(.13*Math.min(PARTS[7].fill+.0,1)).toFixed(3));
+
+  const topC=st.c('top'), pantC=st.c('pants'), shoeC=st.c('shoe');
+  const sleeveF=V('sleeve'), pantF=V('pant'), dress=V('dress');
+  /* ---- legs ---- */
+  function legDraw(pre,Hp,K,A,f,dark){
+    const tW=H*V('thighW'), sW=H*V('shinW'), aW=.042*H;
+    const pts=[Hp,lp(Hp,K,.5),K,lp(K,A,.5),A], ws=[tW,tW*.88,sW*1.08,sW,aW];
+    const sk=dark?darken(SKIN,.12):SKIN;
+    setPart(C[pre+'Leg'],limb(pts,ws,.4,.6),sk);
+    // sock (stage 0)
+    const sock=cutPoly(pts,ws.map(x=>x+1.6),.86,1);
+    setPart(C[pre+'Sock'],limb(sock.p,sock.w,.3,.1),dark?darken(WHITE,.12):WHITE,w[0]);
+    // shoe
+    const m=mm(mm(mT(A[0],A[1]),mR(f.r)),mS(F));
+    const sc=dark?darken(shoeC,.12):shoeC;
+    setPart(C[pre+'Shoe'],morphT(SHOE.body[0],SHOE.body[1],dress,m),sc);
+    setPart(C[pre+'Sole'],morphT(SHOE.sole[0],SHOE.sole[1],dress,m),null);
+    setPart(C[pre+'Lace'],morphT(SHOE.lace[0],SHOE.lace[1],dress,m),null,1-dress*.6);
+    // pants
+    const pc=cutPoly(pts,ws.map((x,i)=>x+V('pantPad')+(i===4?2.2:0)),0,pantF);
+    const pcol=dark?darken(pantC,.08):pantC;
+    setPart(C[pre+'Pants'],limb(pc.p,pc.w,.12,.6),pcol);
+    const e=pc.p[pc.p.length-1], te=norm(sub(e,pc.p[pc.p.length-2])), nn=[-te[1],te[0]], hw=pc.w[pc.w.length-1]/2;
+    setPart(C[pre+'Hem'],`M${P(add(e,mul(nn,hw*.95)))} C${P(add(add(e,mul(te,1.2)),mul(nn,hw*.3)))} ${P(add(add(e,mul(te,1.2)),mul(nn,-hw*.3)))} ${P(add(e,mul(nn,-hw*.95)))}`,null);
+    // knee fold behind the knee (long trousers)
+    const tk=norm(sub(A,Hp)), nk=[tk[1],-tk[0]];
+    const kb=add(K,mul([-1,0],sW*.55));
+    setPart(C[pre+'Knee'],`M${P(add(kb,[-.5,-4]))} C${P(add(kb,[1.5,-1.5]))} ${P(add(kb,[1.5,1.5]))} ${P(add(kb,[-.4,4]))} M${P(add(K,[sW*.3,-6]))} C${P(add(K,[sW*.15,-3]))} ${P(add(K,[sW*.3,-1]))} ${P(add(K,[sW*.15,2]))}`,null,sstep(.6,.9,pantF));
+  }
+  legDraw('f',hipF,kF,fF.A,fF,true);
+  legDraw('n',hipN,kN,fN.A,fN,false);
+  // seat (pelvis in trousers)
+  const bel=V('belly');
+  setPart(C.seat,spline([T(-.53,.22),T(.47+bel,.22),T(.52+bel*.5,-.02),T(.3,-.2),T(-.18,-.24),T(-.56,-.06)],true),pantC);
+  setPart(C.crotch,`M${P(T(.28,-.12))} C${P(T(.18,-.05))} ${P(T(.05,0))} ${P(T(-.05,.02))} M${P(T(.34,.04))} C${P(T(.26,.06))} ${P(T(.16,.08))} ${P(T(.08,.08))}`,null,sstep(.6,.9,pantF));
+  /* ---- backpack ---- */
+  const bpW=(w[0]+w[1]+w[2]), bs=V('bp');
+  {const d=.82*bs,h=.86*bs,vt=.98;const X=u=>-.5-u*d;
+    setPart(C.bpBody,spline([T(-.44,vt),T(X(.55),vt+.04),T(X(1),vt-h*.22),T(X(1.04),vt-h*.72),T(X(.82),vt-h),T(-.47,vt-h+.02)],true),YEL,bpW);
+    setPart(C.bpPocket,spline([T(X(.92),vt-h*.42),T(X(1.2),vt-h*.5),T(X(1.22),vt-h*.86),T(X(.95),vt-h*.95)],true),darken(YEL,.07),bpW);
+    setPart(C.bpFlap,`M${P(T(X(.18),vt+.02))} C${P(T(X(.5),vt-.02))} ${P(T(X(.9),vt-h*.18))} ${P(T(X(1.0),vt-h*.32))} M${P(T(X(1.1),vt-h*.55))} L${P(T(X(1.14),vt-h*.66))}`,null,bpW);
+    setPart(C.bpHandle,`M${P(T(X(.25),vt+.02))} C${P(T(X(.3),vt+.14))} ${P(T(X(.62),vt+.14))} ${P(T(X(.66),vt+.03))}`,null,bpW);
+    const tg0=T(X(1.18),vt-h*.62);setPart(C.bpTag,`M${P(tg0)} L${P(add(tg0,[-1.8,5]))} L${P(add(tg0,[1.6,6.4]))} Z`,'#e59b98',w[0]);
+  }
+  /* ---- neck & torso ---- */
+  const neckBase=T(.04,.98), headTilt=lean*.25+.02*amp*Math.sin(4*Math.PI*pN+1);
+  const neckTop=add(neckBase,rot([0,-neckVis-(lerp(48,57,faceT)-attachY)*k*.45],headTilt));
+  const nW=H*V('neckW');
+  setPart(C.neck,limb([T(.02,.9),neckBase,neckTop],[nW*1.15,nW*1.05,nW],.2,.2),SKIN);
+  const hem=V('hem'), pad=V('pad');
+  const shirtPts=[T(-.5-pad,hem+.02),T(-.49-pad,.3),T(-.55-pad,.7),T(-.42-pad*.4,.97),T(-.12,1.08),T(.2,1.05),T(.42+pad*.6,.9),T(.53+pad,.66),T(.48+pad+bel,.3),T(.5+pad+bel*.6,hem),T(0,hem-.03)];
+  const shirtD=spline(shirtPts,true);
+  setPart(C.shirt,shirtD,topC);
+  $('shirtClipPath').setAttribute('d',shirtD);
+  {let d='';for(let v=hem+.08;v<1.1;v+=.15){d+=`M${P(T(-1.2,v))} L${P(T(1.2,v))} L${P(T(1.2,v+.065))} L${P(T(-1.2,v+.065))} Z `}setPart(C.stripes,d,STRIPE,w[0])}
+  setPart(C.shade,spline([T(-.47-pad,hem+.04),T(-.47-pad,.4),T(-.51-pad,.72),T(-.32,.9),T(-.3,.6),T(-.34,.2)],true),'rgba(40,36,32,.10)');
+  setPart(C.crew,`M${P(T(-.14,1.07))} C${P(T(-.02,.98))} ${P(T(.14,.97))} ${P(T(.22,1.04))}`,null,w[0]+w[3]);
+  setPart(C.folds,`M${P(T(.36,.18))} C${P(T(.26,.22))} ${P(T(.18,.2))} ${P(T(.1,.24))} M${P(T(-.3,.12))} C${P(T(-.22,.18))} ${P(T(-.12,.16))} ${P(T(-.04,.2))} M${P(T(.3,.6))} C${P(T(.22,.58))} ${P(T(.16,.62))} ${P(T(.1,.6))}`,null);
+  const jac=w[2]+w[4];
+  setPart(C.lapel,`M${P(T(.14,1.06))} C${P(T(.22,.96))} ${P(T(.3,.86))} ${P(T(.36,.8))} L${P(T(.46,.86))} M${P(T(.36,.8))} C${P(T(.44,.68))} ${P(T(.5,.56))} ${P(T(.52,.48))}`,null,jac);
+  setPart(C.jFront,`M${P(T(.52+pad,.48))} C${P(T(.54+pad,.3))} ${P(T(.54+pad,.1))} ${P(T(.52+pad,hem+.03))}`,null,jac);
+  setPart(C.buttons,circ(...T(.5+pad,.36),.9)+circ(...T(.51+pad,.17),.9),'#2a2622',jac);
+  setPart(C.pockets,`M${P(T(.06,.1))} L${P(T(.44,.08))} M${P(T(.06,.1))} L${P(T(.08,.04))} M${P(T(.16,.72))} L${P(T(.42,.7))}`,null,jac);
+  setPart(C.kanga,`M${P(T(-.04,.42))} C${P(T(.14,.44))} ${P(T(.3,.44))} ${P(T(.42,.4))} C${P(T(.5,.3))} ${P(T(.52,.16))} ${P(T(.52,.06))} M${P(T(-.04,.42))} L${P(T(-.04,.06))}`,null,w[3]);
+  setPart(C.hemRib,`M${P(T(-.6,hem+.08))} C${P(T(-.2,hem+.06))} ${P(T(.2,hem+.07))} ${P(T(.6,hem+.08))}`,null,w[3]);
+  setPart(C.hood,spline([T(-.08,1.08),T(-.4,1.18),T(-.68,1.04),T(-.66,.84),T(-.46,.8),T(-.28,.93)],true),darken(ST.top[3],.05),w[3]);
+  setPart(C.hoodIn,`M${P(T(-.26,1.07))} C${P(T(-.42,1.08))} ${P(T(-.56,1))} ${P(T(-.58,.88))}`,null,w[3]);
+  setPart(C.strings,`M${P(T(.26,1.0))} C${P(T(.3,.9))} ${P(T(.3,.8))} ${P(T(.32,.72))} M${P(T(.32,1.0))} C${P(T(.37,.92))} ${P(T(.38,.84))} ${P(T(.4,.76))}`,null,w[3]);
+  const collarW=w[1]+w[2]+w[4];
+  setPart(C.collar,spline([T(-.1,1.11),T(.16,1.14),T(.4,1.0),T(.3,.93),T(.14,1.02)],true),WHITE,collarW);
+  const tieW=w[2]+w[4];
+  const tieSw=.02*amp*Math.sin(2*Math.PI*pN);
+  setPart(C.tie,limb([T(.34,1.02),T(.46+pad*.8,.84),T(.54+pad*.9+tieSw,.62),T(.56+pad*.9+tieSw*1.5,.44)],[1.8,2,2.3,.9],.4,.3),st.c('tie'),tieW);
+  {const b0=T(.3,.7),b1=T(.34,.9);setPart(C.pPencil,limb([b0,lp(b0,b1,.5),b1],[2.2,2.2,1.6],.9,.1),YEL,w[4])}
+  /* ---- head ---- */
+  const mH=mm(mm(mm(mT(neckTop[0],neckTop[1]),mR(headTilt)),mS(k)),mT(0,-attachY));
+  const hm=(key)=>morphT(HEAD[key][0],HEAD[key][1],(key==='hair'||key==='tuft'||key==='strands'||key==='hpart')?hairT:faceT,mH);
+  setPart(C.skin,hm('skin'),SKIN);
+  setPart(C.jaw,hm('jaw'),null,.6+faceT*.4);
+  setPart(C.blush,hm('blush'),'rgba(226,138,120,.35)');
+  setPart(C.freck,hm('freck'),'rgba(150,98,70,.75)');
+  setPart(C.mole,hm('mole'),'#5b463b');
+  setPart(C.eye,hm('eye'),INK);setPart(C.eyeHi,hm('eyeHi'),'#fffdf8');
+  setPart(C.lid,hm('lid'));setPart(C.brow,hm('brow'));setPart(C.nostril,hm('nostril'));setPart(C.mouth,hm('mouth'));
+  setPart(C.hair,hm('hair'),HAIR);setPart(C.strands,hm('strands'),null);setPart(C.hpart,hm('hpart'),null,hairT);setPart(C.tuft,hm('tuft'),null);
+  setPart(C.ear,hm('ear'),SKIN);setPart(C.earIn,hm('earIn'));
+  // strands drawn in a lighter line
+  C.strands.ink.setAttribute('stroke','#7a6a5e');
+  /* ---- straps & bags ---- */
+  setPart(C.strap,limb([T(-.42,.98),T(-.06,1.1),T(.3,1.0),T(.45,.72),T(.36,.46),T(.12,.36)],Array(6).fill(.13*dep),.2,.2),darken(YEL,.04),bpW);
+  const mW=w[3];
+  setPart(C.mStrap,limb([T(-.22,1.07),T(.16,1.07),T(.44,.78),T(.52,.42),T(.42,.08)],Array(5).fill(.12*dep),.2,.2),YEL,mW);
+  {const sw=.03*amp*Math.sin(2*Math.PI*pN);const bp=(u,v)=>T(u+sw,v);
+    setPart(C.mBag,spline([bp(-.26,.1),bp(.62,.1),bp(.66,-.12),bp(.6,-.32),bp(-.22,-.32),bp(-.28,-.1)],true),'#9c8d6e',mW);
+    setPart(C.mFlap,spline([bp(-.27,.11),bp(.63,.11),bp(.64,-.06),bp(.2,-.12),bp(-.26,-.06)],true),'#8a7c5f',mW);
+    const bk=bp(.2,-.1);setPart(C.mBuckle,`M${P(add(bk,[-2,-1.6]))} L${P(add(bk,[2,-1.6]))} L${P(add(bk,[2,2.6]))} L${P(add(bk,[-2,2.6]))} Z`,'#c9b98f',mW);
+  }
+  /* ---- arms ---- */
+  function armDraw(pre,a,dark){
+    const uW=H*V('uaW'), fW=H*V('faW');
+    const pts=[a.S,lp(a.S,a.E,.5),a.E,lp(a.E,a.W,.5),a.W], ws=[uW*1.05,uW,uW*.86,fW,fW*.82];
+    const sk=dark?darken(SKIN,.12):SKIN;
+    setPart(C[pre+'Arm'],limb(pts,ws,.5,.6),sk);
+    const sp=V('sleevePad'), sl=cutPoly(pts,ws.map(x=>x+sp),0,sleeveF);
+    const tc=dark?darken(topC,.12):topC;
+    setPart(C[pre+'Sleeve'],limb(sl.p,sl.w,.12,.95),tc);
+    // shirt cuff under jacket sleeve / hoodie rib
+    const cuffW=w[4]+w[3]*.999;const cf=cutPoly(pts,ws.map(x=>x+sp-.6),Math.max(0,sleeveF-.06),sleeveF);
+    setPart(C[pre+'Cuff'],limb(cf.p,cf.w,.1,.1),w[3]>w[4]?darken(ST.top[3],.1):WHITE,cuffW*sstep(.8,1,sleeveF));
+    const m=mm(mm(mT(a.W[0],a.W[1]),mR(Math.atan2(a.hd[1],a.hd[0]))),mS(hL,-hL));
+    setPart(C[pre+'Hand'],morphT(HAND[0],HAND[1],faceT,m),sk);
+    if(pre==='n'){
+      setPart(C.nFinger,morphT(FINGER[0],FINGER[1],faceT,m),null);
+      const ed=norm(sub(a.W,a.S)),en=[ed[1],-ed[0]];const eo=add(a.E,mul([1,0],uW*.25));
+      setPart(C.nElbow,`M${P(add(eo,[-1,-3]))} C${P(add(eo,[1.5,-1]))} ${P(add(eo,[1.2,1.5]))} ${P(add(eo,[-.8,3.5]))}`,null,sstep(.6,.95,sleeveF));
+      setPart(C.nSleeveBack,'M0,0',null,0);
+    }
+  }
+  armDraw('f',aF,true);
+  armDraw('n',aN,false);
+  /* ---- briefcase ---- */
+  {const g=add(aN.W,mul(aN.hd,hL*.55));const ang=-(aN.th-.03-lean*.6)*.35;
+    const cw=.25*H,ch=.18*H;const q=(x,y)=>add(g,rot([x,y],ang));
+    setPart(C.bcBody,spline([q(-cw/2,ch*.16),q(cw/2,ch*.16),q(cw/2+.6,ch*.6),q(cw/2,ch),q(-cw/2,ch),q(-cw/2-.6,ch*.6)],true,.55),'#6c4a35',w[4]);
+    setPart(C.bcHandle,`M${P(q(-cw*.16,ch*.17))} C${P(q(-cw*.16,-ch*.06))} ${P(q(cw*.16,-ch*.06))} ${P(q(cw*.16,ch*.17))}`,null,w[4]);
+    setPart(C.bcDetail,`M${P(q(-cw/2+1,ch*.42))} L${P(q(cw/2-1,ch*.42))} M${P(q(-cw*.3,ch*.36))} L${P(q(-cw*.3,ch*.5))} M${P(q(cw*.3,ch*.36))} L${P(q(cw*.3,ch*.5))}`,null,w[4]);
+  }
+  /* ---- skeleton overlay ---- */
+  if(skelOn){
+    const hc=add(neckTop,rot([0,-(attachY)*k*.6],headTilt));
+    const segs=[[hipF,kF,fF.A],[aF.S,aF.E,aF.W],[[0,0],T(.04,.98),neckTop,hc],[hipN,kN,fN.A],[aN.S,aN.E,aN.W]];
+    skel.lines.setAttribute('d',segs.map(sg=>'M'+sg.map(P).join(' L')).join(' '));
+    skel.dots.setAttribute('d',[hipF,kF,fF.A,aF.S,aF.E,aF.W,[0,0],neckTop,hipN,kN,fN.A,aN.S,aN.E,aN.W,hc].map(p=>circ(r2(p[0]),r2(p[1]),2)).join(' '));
+  }
+  lastPose={hip,hipY,H,sx,a,facing};
+  return lastPose;
+}
+
+/* ---------------- camera ---------------- */
+let VW=1000,VH=600;
+function camera(pose){
+  const fit=Math.min(VW/WW,VH/WH)*.97;
+  const minPx=VW<720?Math.max(105,VW*.3):105;
+  const zF=Math.max(fit,minPx/170);
+  const zI=Math.min(4.2,VH*.5/118, VW*.7/100);
+  const kidC=add(at(S0),[0,-60]);
+  if(window.__camDbg){const c=add(pose.hip,[0,-(window.__camY||55)]);const zd=window.__camDbg;world.setAttribute('transform',`translate(${r2(VW/2-c[0]*zd)},${r2(VH/2-c[1]*zd)}) scale(${zd})`);return zd}
+  const visW=VW/zF,visH=VH/zF;
+  const tgt=add(at(Math.min(SEND,pose.s+70)),[0,-80]);
+  const cxF=visW>=WW?WW/2:clamp(tgt[0],visW/2,WW-visW/2), cyF=visH>=WH?WH/2:clamp(tgt[1],visH/2,WH-visH/2);
+  let z=Math.exp(lerp(Math.log(zF),Math.log(zI),state.camIntro)), cx=lerp(cxF,kidC[0],state.camIntro), cy=lerp(cyF,kidC[1],state.camIntro);
+  const zE=Math.max(fit,zF*.62),vwE=VW/zE,vhE=VH/zE,eT=add(at(SEND),[0,-140]);const cxE=vwE>=WW?WW/2:clamp(eT[0],vwE/2,WW-vwE/2),cyE=vhE>=WH?WH/2:clamp(eT[1],vhE/2,WH-vhE/2);
+  z=Math.exp(lerp(Math.log(z),Math.log(zE),state.camEnd));cx=lerp(cx,cxE,state.camEnd);cy=lerp(cy,cyE,state.camEnd);
+  world.setAttribute('transform',`translate(${r2(VW/2-cx*z)},${r2(VH/2-cy*z)}) scale(${z.toFixed(4)})`);
+  return z;
+}
+
+/* ---------------- pencil tip tracking ---------------- */
+const penPos={x:0,y:0,init:false};let lastRT=performance.now();
+function ptOn(pathEl,f){if(!pathEl)return null;const ctm=pathEl.getCTM();if(!ctm)return null;if(!pathEl.getAttribute('d'))return null;const L=pathEl.getTotalLength();if(!L)return null;const p=pathEl.getPointAtLength(clamp(f,0,1)*L);
+  const m=world.getCTM().inverse().multiply(ctm);return[m.a*p.x+m.c*p.y+m.e,m.b*p.x+m.d*p.y+m.f]}
+const roadPen={x:at(0)[0],y:at(0)[1]};
+function pencilTarget(){
+  for(let i=0;i<PARTS.length;i++){const d=PARTS[i].draw;if(d>0&&d<1){const o=C[LEAD[i]];const p=ptOn(o.ink,d);if(p)return{p,on:1}}}
+  for(const b of B){if(b.st.sketch>0&&b.st.sketch<1){const n=b.inks.length,f=b.st.sketch*n,i=Math.min(n-1,Math.floor(f));const p=ptOn(b.inks[i],f-i);if(p)return{p,on:1}}
+    if(b.st.under>0&&b.st.under<1){const p=ptOn(b.under,b.st.under);if(p)return{p,on:1}}}
+  if(state.road>0&&state.road<1)return{p:[roadPen.x,roadPen.y],on:1};
+  return null;
+}
+
+/* ---------------- timeline ---------------- */
+const INTRO=[.45,.4,.34,.4,.28,.2,.4,.3,.4];
+const tl=gsap.timeline({paused:true,onUpdate:render});
+let tc=.5;
+INTRO.forEach((d,i)=>{tl.to(PARTS[i],{draw:1,duration:d,ease:'sine.inOut'},tc);tc+=d*.92});
+const T_LINES=tc;
+PARTS.forEach((p,i)=>tl.to(p,{fill:1,duration:.45,ease:'power1.out'},T_LINES+.02+i*.035));
+tl.to(state,{hills:1,duration:1,ease:'none'},T_LINES+.1);
+// road: first stretch under the kid, then the school behind him
+const rf=s=>s/RL;
+let tr=T_LINES+.05;
+function roadSeg(f0,f1,speed=760){const dur=Math.max(.35,(f1-f0)*RL/speed);
+  tl.to(state,{road:f1,duration:dur,ease:'sine.inOut'},tr);
+  tl.to(roadPen,{motionPath:{path:roadGuide,start:f0,end:f1},duration:dur,ease:'sine.inOut'},tr);
+  tr+=dur;}
+function sketch(k,dur=.7){const b=B[k];tl.to(b.st,{sketch:1,duration:dur,ease:'none'},tr);tl.to(b.st,{wash:1,duration:.5,ease:'power1.out'},tr+dur*.7);tl.to(b.st,{label:1,duration:.4},tr+dur*.8);tr+=dur+.05}
+roadSeg(0,rf(S0+90),900);
+sketch(0,.75);
+tl.to(state,{scen:1,duration:2,ease:'none'},tr);
+tl.to(state,{camIntro:0,duration:1.7,ease:'power2.inOut'},T_LINES+.35);
+const T_WALK=tr+.02;
+tl.to(state,{walkT:WALK_DUR,duration:WALK_DUR,ease:'none'},T_WALK);
+let fPrev=rf(S0+90);
+for(let k=1;k<5;k++){const f=Math.min(1,rf(B[k].s)-(k===4?0:.012));roadSeg(fPrev,f,1100);fPrev=f;if(k<4)sketch(k,.6);}
+if(fPrev<1)roadSeg(fPrev,1,1100);
+sketch(4,.7);
+const T_ROAD_DONE=tr;
+tl.to(state,{penOut:1,duration:.6,ease:'power2.in'},T_ROAD_DONE+.05);
+// arrivals: building warms up as the walker reaches it
+const arrive=s=>{const i=clamp(Math.round((s-S0)/dsG),0,NG);return TT[i]};
+B.forEach((b,k)=>{const ta=T_WALK+(k===0?0:arrive(FS[k]))-(k===0?-.1:.5);tl.to(b.st,{lit:1,duration:.6,ease:'power1.out'},ta);});
+const T_END=T_WALK+WALK_DUR;
+tl.to(state,{penOut:0,duration:.35,ease:'power2.out'},T_END-.2);
+tl.to(B[4].st,{under:1,duration:.45,ease:'sine.inOut'},T_END+.15);
+tl.to(state,{penOut:1,duration:.45,ease:'power2.in'},T_END+.65);
+tl.to(state,{camEnd:1,duration:1.4,ease:'power2.inOut'},T_END+.1);
+tl.to(state,{outro:1,duration:1.5,ease:'power2.inOut'},T_END+1.0);
+tl.to({},{duration:.8},T_END+2.5);
+const TOTAL=tl.duration();
+
+/* ---------------- render ---------------- */
+let skelOn=false,inkM=0;
+function render(){
+  const s=sFromT(state.walkT);
+  world.style.opacity=(1-state.outro).toFixed(3);
+  $('grain').style.opacity=(.5*(1-state.outro)).toFixed(3);
+  const outro=$('educationOutro');
+  outro.style.opacity=state.outro.toFixed(3);
+  outro.style.visibility=state.outro>.001?'visible':'hidden';
+  outro.classList.toggle('visible',state.outro>.55);
+  const pose=poseAndDraw(s);pose.s=s;
+  const z=camera(pose);
+  const m=clamp(1.25/Math.pow(z,.62),.45,1.9);if(Math.abs(m-inkM)>.004){inkM=m;for(const k in C){const o=C[k];if(o.ink)o.ink.setAttribute('stroke-width',r2(o.sw*m))}skel.lines.setAttribute('stroke-width',r2(1.6*m))}
+  // road
+  const rd=state.road;roadLayer.style.visibility=rd>0?'':'hidden';roadEdge.setAttribute('stroke-dashoffset',r2(1-rd));roadFill.setAttribute('stroke-dashoffset',r2(1-rd));
+  roadTex.style.opacity=rd>=1?.9:0;roadTex2.style.opacity=rd>=1?.8:0;
+  // buildings
+  B.forEach(b=>{const n=b.inks.length;b.inks.forEach((p,i)=>{const v=clamp(b.st.sketch*n-i,0,1);p.setAttribute('stroke-dashoffset',r2(1-v));p.style.visibility=v>0?'':'hidden'});
+    b.washG.setAttribute('opacity',b.st.wash.toFixed(3));b.litG.setAttribute('opacity',b.st.lit.toFixed(3));
+    b.label.setAttribute('opacity',b.st.label.toFixed(3));b.label.setAttribute('transform',`translate(0,${r2((1-b.st.label)*6)})`);
+    b.under.setAttribute('stroke-dashoffset',r2(1-b.st.under));b.under.style.visibility=b.st.under>0?'':'hidden';});
+  hills.setAttribute('opacity',(state.hills*.9).toFixed(3));
+  scenInks.forEach((p,i)=>{const v=clamp(state.scen*scenInks.length*.6-i*.6,0,1);p.setAttribute('stroke-dashoffset',r2(1-v));p.style.visibility=v>0?'':'hidden'});
+  scenWashes.forEach((p,i)=>p.setAttribute('opacity',(clamp(state.scen*scenInks.length*.6-i*.6-.5,0,1)*.9).toFixed(3)));
+  // pencil
+  const now=performance.now(),dt=Math.min(.1,(now-lastRT)/1000);lastRT=now;
+  const tg=pencilTarget();
+  const ps=135/(130*z);
+  let tx,ty,op;
+  if(tg){tx=tg.p[0];ty=tg.p[1];op=1}
+  else{const ref=lastPose?[lastPose.hip[0],lastPose.hipY]:[800,500];tx=ref[0]+180/z*state.penOut+60/z;ty=ref[1]-260/z*state.penOut-120/z;op=1-state.penOut}
+  if(state.penOut>0&&!tg){op=1-state.penOut}
+  if(!penPos.init||seeking){penPos.x=tx;penPos.y=ty;penPos.init=true}
+  else{const kf=1-Math.exp(-dt*(tg?26:8));penPos.x+=(tx-penPos.x)*kf;penPos.y+=(ty-penPos.y)*kf}
+  const wob=tg?Math.sin(now/55)*2.5:0;
+  pen.setAttribute('transform',`translate(${r2(penPos.x)},${r2(penPos.y)}) scale(${ps.toFixed(3)}) rotate(${wob.toFixed(2)})`);
+  pen.setAttribute('opacity',(tl.time()<.25?tl.time()/.25:clamp(op,0,1)).toFixed(3));
+  // hud
+  seeking=false;
+}
+
+let seeking=false;
+
+/* paper grain */
+function grain(){const c=$('grain'),w=c.clientWidth,h=c.clientHeight;if(!w)return;const s=Math.min(2,devicePixelRatio||1);c.width=w*s;c.height=h*s;const g=c.getContext('2d');
+  const t=document.createElement('canvas');t.width=t.height=180;const tg=t.getContext('2d'),im=tg.createImageData(180,180),q=rnd(9);
+  for(let i=0;i<im.data.length;i+=4){const v=200+q()*55;im.data[i]=v;im.data[i+1]=v-2;im.data[i+2]=v-8;im.data[i+3]=q()<.5?26:12}
+  tg.putImageData(im,0,0);g.fillStyle=g.createPattern(t,'repeat');g.fillRect(0,0,c.width,c.height)}
+function resize(){const r=$('stage').getBoundingClientRect();VW=r.width;VH=r.height;svg.setAttribute('viewBox',`0 0 ${VW} ${VH}`);grain();seeking=true;render()}
+new ResizeObserver(resize).observe($('stage'));
+resize();
+
+window.__journey={tl,state,seek:t=>{seeking=true;tl.pause();tl.time(t);render()},TOTAL,T_WALK,WALK_DUR};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const start=()=>{if(reduce){seeking=true;tl.progress(1)}else tl.play()};
+(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>setTimeout(start,250));
+})();
+</script>

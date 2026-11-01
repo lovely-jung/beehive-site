@@ -717,6 +717,27 @@ body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;background:#f
  .edu-card.organizations{right:10.7%!important;}
  .edu-card.curriculum{right:11.6%!important;}
 }
+/* Match the supplied close portfolio collage at wide and tall desktop sizes. */
+@media(min-width:761px) and (max-height:1099px){
+ .outro-person{height:min(65vh,560px)!important;max-width:45vw!important;bottom:-16%!important;}
+ .edu-card.students{left:6%!important;top:49%!important;width:min(31vw,520px)!important;}
+ .edu-card.campus{right:4%!important;top:46%!important;width:min(35vw,590px)!important;}
+ .edu-card.workshops{left:3%!important;top:61%!important;width:min(35vw,590px)!important;height:clamp(145px,18vh,175px)!important;}
+ .edu-card.blue{left:8%!important;top:79%!important;width:min(30vw,510px)!important;height:clamp(112px,15vh,140px)!important;}
+ .edu-card.organizations{right:4%!important;top:54%!important;width:min(33vw,560px)!important;height:clamp(135px,17vh,160px)!important;}
+ .edu-card.curriculum{right:8%!important;top:74%!important;width:min(33vw,560px)!important;height:clamp(115px,15vh,140px)!important;}
+}
+@media(min-width:761px) and (min-height:1100px){
+ .outro-person{height:min(70vh,1120px)!important;max-width:41vw!important;bottom:-16%!important;}
+ .edu-card.students{left:6%!important;top:41%!important;width:min(31vw,560px)!important;height:160px!important;}
+ .edu-card.campus{right:4%!important;top:41%!important;width:min(35vw,600px)!important;height:165px!important;}
+ .edu-card.workshops{left:3%!important;top:60%!important;width:min(33vw,600px)!important;height:clamp(230px,18vh,285px)!important;}
+ .edu-card.blue{left:8%!important;top:79%!important;width:min(28vw,520px)!important;height:clamp(170px,14vh,220px)!important;}
+ .edu-card.organizations{right:4%!important;top:52%!important;width:min(33vw,600px)!important;height:clamp(200px,16vh,255px)!important;}
+ .edu-card.curriculum{right:8%!important;top:72%!important;width:min(32vw,590px)!important;height:clamp(185px,15vh,240px)!important;}
+ .edu-card.workshops .edu-icon,.edu-card.organizations .edu-icon,.edu-card.curriculum .edu-icon{width:90px!important;height:90px!important;}
+ .edu-card.blue .edu-icon{width:82px!important;height:82px!important;}
+}
 </style>
 
 <div class="app">

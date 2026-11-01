@@ -672,6 +672,32 @@ body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;background:#f
  .outro-heading h1{font-size:clamp(42px,4.7vw,62px)!important;}
  .outro-person{height:min(34vh,280px)!important;}
 }
+/* Editorial outro scale: readable navigation, fuller portrait, tighter collage */
+@media(min-width:761px){
+ .global-nav{height:80px!important;padding-inline:clamp(28px,5.5vw,92px)!important;}
+ .global-brand{font-size:16px!important;}
+ .global-links{gap:clamp(20px,2.6vw,42px)!important;}
+ .global-links>a,.global-links .nav-dropdown>.nav-trigger{font-size:clamp(13px,.9vw,16px)!important;}
+ .global-links .nav-dropdown>.nav-trigger:after{font-size:14px!important;}
+ .global-links a:last-child{padding:13px 22px!important;}
+ .outro-person{height:min(58vh,500px)!important;max-width:42vw!important;bottom:-2%!important;}
+ .edu-card.students{left:10%!important;top:49%!important;width:clamp(250px,26vw,420px)!important;}
+ .edu-card.campus{right:10%!important;top:46%!important;width:clamp(250px,26vw,420px)!important;}
+ .edu-card.workshops{left:7%!important;width:clamp(250px,25vw,420px)!important;}
+ .edu-card.blue{left:11%!important;width:clamp(250px,25vw,420px)!important;}
+ .edu-card.organizations{right:7%!important;width:clamp(260px,27vw,440px)!important;}
+ .edu-card.curriculum{right:11%!important;width:clamp(260px,27vw,440px)!important;}
+}
+@media(max-width:760px){
+ .global-nav{height:64px!important;}
+ .global-brand{font-size:12px!important;}
+ .global-links a,.global-links .nav-dropdown>.nav-trigger{font-size:10px!important;}
+ .outro-person{height:min(40vh,340px)!important;max-width:48vw!important;}
+ .edu-card.students{left:5%!important;width:40vw!important;}
+ .edu-card.campus{right:5%!important;width:40vw!important;}
+ .edu-card.workshops,.edu-card.blue{left:3%!important;width:40vw!important;}
+ .edu-card.organizations,.edu-card.curriculum{right:3%!important;width:41vw!important;}
+}
 </style>
 
 <div class="app">

@@ -722,8 +722,38 @@ body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;background:#f
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/MotionPathPlugin.min.js"></script>
 <script>
+/* Keep the journey playable even when a browser blocks third-party animation libraries. */
+if(!window.gsap||!window.MotionPathPlugin){
+  const easeOf=s=>p=>{if(s==="none")return p;if(s==="sine.inOut")return-(Math.cos(Math.PI*p)-1)/2;
+    if(s==="power1.in")return p*p;if(s==="power1.out")return 1-(1-p)*(1-p);
+    if(s==="power2.in")return p*p*p;if(s==="power2.out")return 1-Math.pow(1-p,3);
+    if(s==="power2.inOut")return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;return p};
+  window.MotionPathPlugin={};
+  window.gsap={registerPlugin(){},timeline(opts={}){const tracks=[],bases=new WeakMap();let now=0,dur=0,playing=false,raf=0,origin=0;
+    const base=(obj,key)=>{let m=bases.get(obj);if(!m){m=new Map();bases.set(obj,m)}if(!m.has(key))m.set(key,obj[key]);return m.get(key)};
+    const tl={to(obj,v,at=0){const span=Number(v.duration)||0;
+      if(v.motionPath){const mp=v.motionPath;tracks.push({obj,start:at,duration:span,ease:easeOf(v.ease),path:mp.path,from:mp.start??0,to:mp.end??1});}
+      else for(const key of Object.keys(v)){if(key==="duration"||key==="ease"||key==="onUpdate")continue;
+        const prev=tracks.filter(t=>t.obj===obj&&t.key===key&&t.start<=at).sort((a,b)=>a.start+a.duration-(b.start+b.duration)).pop();
+        tracks.push({obj,key,start:at,duration:span,ease:easeOf(v.ease),from:prev?prev.to:base(obj,key),to:v[key]});}
+      dur=Math.max(dur,at+span);return tl},
+      duration(){return dur},time(value){if(value===undefined)return now;now=Math.max(0,Math.min(dur,value));apply(now);return tl},
+      progress(value){if(value===undefined)return dur?now/dur:0;now=Math.max(0,Math.min(dur,value*dur));apply(now);return tl},
+      pause(){playing=false;if(raf)cancelAnimationFrame(raf);return tl},
+      play(){if(playing)return tl;playing=true;origin=performance.now()-now*1000;
+        const tick=stamp=>{if(!playing)return;now=Math.min(dur,(stamp-origin)/1000);apply(now);if(now>=dur){playing=false;return}raf=requestAnimationFrame(tick)};
+        raf=requestAnimationFrame(tick);return tl}};
+    function apply(t){for(const q of tracks){const p=q.duration?Math.max(0,Math.min(1,(t-q.start)/q.duration)):(t>=q.start?1:0),e=q.ease(p);
+      if(q.path){const len=q.path.getTotalLength(),pt=q.path.getPointAtLength(Math.max(0,Math.min(1,q.from+(q.to-q.from)*e))*len);q.obj.x=pt.x;q.obj.y=pt.y}
+      else if(p>=0)q.obj[q.key]=typeof q.from==="number"&&typeof q.to==="number"?q.from+(q.to-q.from)*e:(p>=1?q.to:q.from)}
+      if(opts.onUpdate)opts.onUpdate()}
+    return tl}};
+}
+if(window.MotionPathPlugin?.register&&window.gsap?.registerPlugin)window.gsap.registerPlugin(window.MotionPathPlugin);
+</script>
+<script>
 (()=>{
-gsap.registerPlugin(MotionPathPlugin);
+if(!window.gsap)throw new Error('Animation timeline unavailable');
 const NS='http://www.w3.org/2000/svg';
 const WW=1600, WH=800;
 const INK='#33302c';
@@ -1343,7 +1373,7 @@ tl.to({},{duration:.8},T_END+2.5);
 const TOTAL=tl.duration();
 
 /* ---------------- render ---------------- */
-let skelOn=false,inkM=0;
+let skelOn=false,inkM=0,seeking=false;
 function render(){
   const s=sFromT(state.walkT);
   world.style.opacity=(1-state.outro).toFixed(3);
@@ -1383,8 +1413,6 @@ function render(){
   seeking=false;
 }
 
-let seeking=false;
-
 /* paper grain */
 function grain(){const c=$('grain'),w=c.clientWidth,h=c.clientHeight;if(!w)return;const s=Math.min(2,devicePixelRatio||1);c.width=w*s;c.height=h*s;const g=c.getContext('2d');
   const t=document.createElement('canvas');t.width=t.height=180;const tg=t.getContext('2d'),im=tg.createImageData(180,180),q=rnd(9);
@@ -1398,3 +1426,5 @@ window.__journey={tl,state,seek:t=>{seeking=true;tl.pause();tl.time(t);render()}
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const start=()=>{if(reduce){seeking=true;tl.progress(1)}else tl.play()};
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>setTimeout(start,250));
+})();
+</script>
